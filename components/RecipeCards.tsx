@@ -1,5 +1,4 @@
-// import React from 'react'
-import { RecipeType } from './Recipes';
+import { RecipeType } from './RecipesGrid';
 // import Recipes from './Recipes'
 
 interface RecipeCardProp {
@@ -12,13 +11,15 @@ function RecipeCards({recipe}: RecipeCardProp) {
   const {id, image, title} = recipe;
 
   return (
-    <div>
+    <>
       <div className="RecipeCard">
+        <button className='favIcon'>❤</button>
                     <img className= "RecipeImage" src={image} alt={title} key={id} />
                     <h3>{title}</h3>
+                    <button >View More</button>
                 </div>
 
-    </div>
+    </>
   )
 }
 
