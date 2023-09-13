@@ -1,8 +1,11 @@
 // import React from 'react'
 import { useState, useEffect } from 'react'
 import RecipeCards from './RecipeCards'
+import SearchBox from './SearchBox'
 
-const apiKey= "649ac07b69a74c6b9346b453f3d52d72";
+
+const apiKey:string = "649ac07b69a74c6b9346b453f3d52d72";
+
 
 export interface RecipeType {
     id: number,
@@ -20,11 +23,16 @@ const [recipes, setRecipes] = useState<RecipeType[]>([
         imageType: "",
     }
 ])
+
+const [offset, setOffset] = useState<number>(0)
+const [query, setQuery] = useState<string>("")
+const [cuisine, setCuisine] = useState<string>("")
+const [diet, setDiet] = useState<string>("")
 const [url, setUrl] = useState<string>(
-    `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}`
+    `https://api.spoonacular.com/recipes/complexSearch?offset=0&number=24&query=${query}&apiKey=${apiKey}` //! ADD PARAMS
   );
 
-// console.log(url);
+
 
 const fetchRecipes = async (url: string) => {
     const response = await fetch(url);
@@ -32,9 +40,6 @@ const fetchRecipes = async (url: string) => {
     console.log("data :>> ", data);
     const recipesList = data.results as RecipeType[];
     console.log(recipesList);
-    // const infoData = data.info as InfoType;
-
-    // console.log("recipesList :>> ", recipesList);
     setRecipes(recipesList);
   };
 
@@ -45,15 +50,16 @@ const fetchRecipes = async (url: string) => {
 
 
   return (
-    <div>
+    <>
         <h2>Recipes:</h2>
+<SearchBox setQuery = {setQuery} setCuisine = {setCuisine} setDiet={setDiet}/>
 
         <div className='RecipeContainer'>
   {recipes ? (
     recipes.map((recipe) => {
       return (
         <div key={recipe.id} >
-          <RecipeCards recipe ={recipe} />
+          <RecipeCards recipe ={recipe} query={query} cuisine={cuisine} diet={diet}/>
         </div>
       );
     })
@@ -61,8 +67,19 @@ const fetchRecipes = async (url: string) => {
     <h1>....WHAT???...</h1>
   )}
 </div>
+
+<div className="pagination">
+  <button value={"prev"} >← </button>
+  <button value={"next"} > →</button>
+</div>
+
+
+{/* <button value={"prev"} onChange={changePageNumber}>← </button>
+<button value={"next"} 
+        onClick={changePageNumber}> →</button> */}
+
         
-    </div>
+    </>
   )
 }
 
