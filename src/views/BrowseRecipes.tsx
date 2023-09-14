@@ -1,8 +1,12 @@
 import React from 'react'
+import Recipes from '../components/RecipesGrid';
+
 
 function BrowseRecipes() {
   return (
-    <div>BrowseRecipes</div>
+    <div>
+      <Recipes/>
+    </div>
   )
 }
 
