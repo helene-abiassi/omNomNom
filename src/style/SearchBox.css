@@ -1,0 +1,50 @@
+.mainSearchBox {
+  display: flex;
+  /* flex-direction: row; */
+  justify-content: center;
+  align-items: center;
+}
+
+.searchBox {
+  width: max-content;
+  display: flex;
+  margin: 2rem;
+  border-radius: 10px;
+}
+
+.searchByIngBox {
+  width: 20rem;
+  color: black;
+  font-family: Inter;
+  font-size: 15px;
+}
+
+.searchInputBox {
+  width: 12rem;
+  height: 2rem;
+  border: 1px solid #000;
+  background: #d9d9d9;
+  box-shadow: 1px 1px black;
+  text-align: center;
+  padding-left: 2%;
+  border-radius: 10px;
+}
+
+.searchByCuiBox {
+  width: 13rem;
+  margin: 2rem;
+  height: 2.5rem;
+  background-color: black;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 1px 1px #d9d9d9;
+}
+
+.radioButtons {
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  width: auto;
+  color: #000;
+  margin-left: 3rem;
+}
