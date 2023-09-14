@@ -4,8 +4,6 @@ import RecipeCards from './RecipeCards'
 import SearchBox from './SearchBox'
 
 
-const apiKey:string = "649ac07b69a74c6b9346b453f3d52d72";
-
 
 export interface RecipeType {
     id: number,
@@ -13,6 +11,13 @@ export interface RecipeType {
     image: string,
     imageType: string,
 }
+
+// interface OffsetType {
+//   query: number;
+//   next: string | null;
+//   prev: string | null;
+// }
+
 function Recipes() {
 
 const [recipes, setRecipes] = useState<RecipeType[]>([
@@ -28,30 +33,41 @@ const [offset, setOffset] = useState<number>(0)
 const [query, setQuery] = useState<string>("")
 const [cuisine, setCuisine] = useState<string>("")
 const [diet, setDiet] = useState<string>("")
-const [url, setUrl] = useState<string>(
-    `https://api.spoonacular.com/recipes/complexSearch?offset=0&number=24&query=${query}&apiKey=${apiKey}` //! ADD PARAMS
-  );
 
 
-
-const fetchRecipes = async (url: string) => {
+const fetchRecipes = async () => {
+const url=  `https://api.spoonacular.com/recipes/complexSearch?offset=${offset}&number=24&query=${query}&diet=${diet}&cuisine=${cuisine}&apiKey=${apiKey}`
     const response = await fetch(url);
     const data = await response.json();
-    console.log("data :>> ", data);
+    // console.log(data);
     const recipesList = data.results as RecipeType[];
-    console.log(recipesList);
+    // console.log(recipesList);
+    setQuery(query)
+    setCuisine(cuisine)
+    setDiet(diet)
     setRecipes(recipesList);
   };
 
+  const changePageNumber = (e: React.MouseEvent<HTMLButtonElement>) => {
+    // console.log("e :>> ", e);
+    const eventTarget = e.target as HTMLButtonElement;
+    const buttonClicked = eventTarget.value;
+    if (buttonClicked === "next") {
+      setOffset(offset + 24);
+    }
+    if (buttonClicked === "prev") {
+      setOffset(offset - 24);
+    }
+  };
+
   useEffect(() => {
-    fetchRecipes(url);
-  }, [url]);
+    fetchRecipes();
+  }, [query, offset, cuisine, diet]);
 
 
 
   return (
     <>
-        <h2>Recipes:</h2>
 <SearchBox setQuery = {setQuery} setCuisine = {setCuisine} setDiet={setDiet}/>
 
         <div className='RecipeContainer'>
@@ -59,7 +75,7 @@ const fetchRecipes = async (url: string) => {
     recipes.map((recipe) => {
       return (
         <div key={recipe.id} >
-          <RecipeCards recipe ={recipe} query={query} cuisine={cuisine} diet={diet}/>
+          <RecipeCards recipe ={recipe} query={query} cuisine={cuisine} diet={diet} offset={offset} />
         </div>
       );
     })
@@ -69,8 +85,8 @@ const fetchRecipes = async (url: string) => {
 </div>
 
 <div className="pagination">
-  <button value={"prev"} >← </button>
-  <button value={"next"} > →</button>
+  <button value={"prev"}  onClick={changePageNumber}>← </button>
+  <button value={"next"}  onClick={changePageNumber}> →</button>
 </div>
 
 
