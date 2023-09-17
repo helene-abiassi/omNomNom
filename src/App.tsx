@@ -7,12 +7,15 @@ import {
   Outlet,
 } from "react-router-dom";
 import '../src/style/App.css'
-// import Recipes from '../components/RecipesGrid';
+// import RecipesGrid from '../components/RecipesGrid';
 import Home from "../views/Home"
 import BrowseRecipes from "../views/BrowseRecipes"
 import MyRecipes from "../views/MyRecipes"
 import RecipeDetails from "../views/RecipeDetails";
-import SignupLogin from "../views/SignupLogin"
+import Login from "../views/Login"
+import Signup from "../views/Signup"
+import Dashboard from "../views/Dashboard"
+
 import ErrorPage from "../views/ErrorPage"
 // import Dashboard from "../views/Dashboard"
 import NavBar from '../components/NavBar';
@@ -27,10 +30,12 @@ createRoutesFromElements(
   <Route path="/" element={<Root/>} errorElement={<ErrorPage/>}>
     <Route index element={<Home/>}/>
     <Route path="browse" element={<BrowseRecipes/>}/>
+    <Route path="browse/:recipeId" element={<RecipeDetails/>}/>
     <Route path="my-recipes" element={<MyRecipes/>}/>
-    <Route path="my-recipes/:name" element={<RecipeDetails/>}/>
-    <Route path="sign-up" element={<SignupLogin/>}/> //! Can I create them as 1 component with 1 route 
-    {/* <Route path="*" element={<ErrorPage/>}/> */}
+    <Route path="signup" element={<Signup/>}/>
+    <Route path="login" element={<Login/>}/>
+    <Route path="dashboard" element={<Dashboard/>}/>
+
 
   </Route>
 )
@@ -42,18 +47,18 @@ createRoutesFromElements(
     <>
     
     <RouterProvider router={router}/>
-    <Outlet/>
-      <img className="mainLogoTxt" src="./public/logo-txt2.png" alt="" />
+    {/* <Outlet/> */}
      {/* <Recipes/> */}
      <Footer/>  
     </>
   )
 }
-//!NavBar not showing up on error page 
 const Root = () =>{
   return (
     <>
     <NavBar/> 
+    <img className="mainLogoTxt" src="./public/logo-txt2.png" alt="omNomNom" />
+
     <Outlet/>
 
     </>
