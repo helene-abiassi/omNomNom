@@ -36,14 +36,15 @@ setQuery(normalizedQuery);
   }
 
   const handleCuisineInput = (e : ChangeEvent<HTMLInputElement>) => {
-    // console.log(e);
     setCuisine(e.target.value);
   }
   
   const handleDietInput = (e : ChangeEvent<HTMLInputElement>) => {
-    // console.log(e);
     setDiet(e.target.value);
   }
+
+  const refresh = () => window.location.reload()
+
 
 
   return (
@@ -52,24 +53,26 @@ setQuery(normalizedQuery);
       
              <div className="searchByCombo">
                <div className="searchByIngBox">
-                   <input  className="searchInputBox" type="text" placeholder='Search by Ingredients...' onChange={handleSearchInput}/>
-                   <p>Enter up to 3 ingredients, <br></br> separated by a ,comma,</p>
+                   <input  className="searchInputBox" type="text" placeholder='Search...' onChange={handleSearchInput}/>
+                   {/* <p>Enter up to 3 ingredients, <br></br> separated by a ,comma,</p> */}
                </div>
-                      <form  onChange={handleCuisineInput}>
-                      <select className="searchByCuiBox" name="cuisine" id="cuisine">
-                    <option value={'All'} >Search by cuisine</option>
-                    {cuisinesArray.map((cuisine, idc) => {
+                      <form  >
+                      <select onChange={handleCuisineInput} className="searchByCuiBox" name="cuisine" id="cuisine">
+                    <option value={"All"} >Search by cuisine</option>
+                    {cuisinesArray && cuisinesArray.map((cuisine, idc) => {
                       return <option key={idc} value={cuisine} >{cuisine}</option>
                     })}
                     </select>
                   </form>
+        <button className="resetButton" onClick={refresh}>Reset</button>
              </div>
-      <form onChange={handleDietInput}>
-      {dietsArray.map((diet:string, idd:number) => {
-                    return <div className="radioButtons"><input type="checkbox" id={idd} value={diet} />
-                    <label for={diet} > {diet}</label><br></br></div>
+      <form className="radioButtons" onChange={handleDietInput}>
+      {dietsArray.map((diet:string, idd:number, key:number) => {
+                    return <div ><input type="checkbox" id={idd} value={diet} key={idd} />
+                    <label htmlFor={diet} > {diet}</label><br></br></div>
                   })}
-      </form>
+        
+      </form><br />
       </div>
     </div>
   )
