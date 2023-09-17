@@ -1,0 +1,26 @@
+p {
+  color: black;
+  font-size: 15px;
+}
+
+.loginImg {
+  width: 40%;
+  height: 40%;
+  margin-left: 10%;
+  box-shadow: 5px 5px black;
+}
+
+.container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.signUpForm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+label {
+  color: black;
+}
