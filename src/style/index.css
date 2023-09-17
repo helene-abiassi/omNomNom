@@ -15,12 +15,15 @@
 }
 
 a {
-  font-weight: 500;
-  /* color: #646cff; */
-  text-decoration: inherit;
+  /* font-weight: 500; */
+  color: white;
+  /* box-shadow: 5px 5px black; */
+
+
+  text-decoration:none;/
 }
 a:hover {
-  color: #535bf2;
+  color:#FE347E
 }
 
 body {
@@ -38,17 +41,17 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+  background-color: #fe347e;
+  width: max-content;
+  align-self: center;
+  padding: 5px;
+  height: min-content;
+  margin: 1rem;
+
+
 }
 button:hover {
-  border-color: #646cff;
+  background-color: black
 }
 button:focus,
 button:focus-visible {
@@ -60,10 +63,6 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+
+
 }
