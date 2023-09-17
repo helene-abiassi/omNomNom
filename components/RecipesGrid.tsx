@@ -4,8 +4,6 @@ import RecipeCards from './RecipeCards'
 import SearchBox from './SearchBox'
 
 
-// const apiKey:string = "649ac07b69a74c6b9346b453f3d52d72";
-const apiKey = "782103823d1a4893a9bfca971f275b33"
 
 export interface RecipeType {
     id: number,
