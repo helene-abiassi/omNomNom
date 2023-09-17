@@ -8,7 +8,7 @@
 .searchBox {
   width: max-content;
   display: flex;
-  margin: 2rem;
+  /* margin: 2rem; */
   border-radius: 10px;
 }
 
@@ -32,7 +32,7 @@
 
 .searchByCuiBox {
   width: 13rem;
-  margin: 2rem;
+  margin-top: 2rem;
   height: 2.5rem;
   background-color: black;
   text-align: center;
@@ -42,9 +42,22 @@
 
 .radioButtons {
   display: flex;
-  flex-direction: row;
-  align-items: left;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  /* align-items: left; */
   width: auto;
   color: #000;
   margin-left: 3rem;
+  margin-bottom: 1rem;
+}
+
+.resetButton {
+  width: min-content;
+  height: min-content;
+  font-size: 15px;
+  background-color: transparent;
+  text-decoration: underline;
+  color: #ff5f1f;
+  border: transparent;
 }
