@@ -5,7 +5,8 @@ import Recipes from '../components/RecipesGrid';
 function BrowseRecipes() {
   return (
     <div>
-      <Recipes/>
+      <RecipesGrid/>
+
     </div>
   )
 }
