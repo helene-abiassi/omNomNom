@@ -4,6 +4,8 @@ import RecipeCards from './RecipeCards'
 import SearchBox from './SearchBox'
 
 
+// const apiKey:string = "649ac07b69a74c6b9346b453f3d52d72";
+const apiKey = "782103823d1a4893a9bfca971f275b33"
 
 export interface RecipeType {
     id: number,
@@ -12,13 +14,8 @@ export interface RecipeType {
     imageType: string,
 }
 
-// interface OffsetType {
-//   query: number;
-//   next: string | null;
-//   prev: string | null;
-// }
 
-function Recipes() {
+function RecipesGrid() {
 
 const [recipes, setRecipes] = useState<RecipeType[]>([
     {
@@ -68,8 +65,8 @@ const url=  `https://api.spoonacular.com/recipes/complexSearch?offset=${offset}&
 
   return (
     <>
+<br />
 <SearchBox setQuery = {setQuery} setCuisine = {setCuisine} setDiet={setDiet}/>
-
         <div className='RecipeContainer'>
   {recipes ? (
     recipes.map((recipe) => {
@@ -85,18 +82,13 @@ const url=  `https://api.spoonacular.com/recipes/complexSearch?offset=${offset}&
 </div>
 
 <div className="pagination">
-  <button value={"prev"}  onClick={changePageNumber}>← </button>
-  <button value={"next"}  onClick={changePageNumber}> →</button>
+  <button style={{fontSize:"18pt"}} value={"prev"}  onClick={changePageNumber}>← </button>
+  <button style={{fontSize:"18pt"}} value={"next"}  onClick={changePageNumber}> →</button>
 </div>
-
-
-{/* <button value={"prev"} onChange={changePageNumber}>← </button>
-<button value={"next"} 
-        onClick={changePageNumber}> →</button> */}
 
         
     </>
   )
 }
 
-export default Recipes
+export default RecipesGrid
