@@ -1,8 +1,8 @@
 #root {
-  width: 1280px;
+  width: 1300px;
   background-color: #34feb4;
   margin: 0 auto;
-  padding: 1rem;
+  /* padding: 1rem; */
   text-align: center;
 }
 
@@ -11,12 +11,6 @@
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
 @keyframes logo-spin {
@@ -38,10 +32,6 @@
   padding: 2em;
 }
 
-.read-the-docs {
-  color: #888;
-}
-
 .fa-home {
   font-size: 24px;
 }
@@ -61,7 +51,28 @@ header {
 }
 
 .mainLogo {
-  height: 10rem;
+  height: 8rem;
+}
+
+.mainLogo:hover {
+  animation-name: shake;
+  animation-duration: 0.8s;
+}
+
+@keyframes shake {
+  25% {
+    transform: rotate(3deg);
+    transform-origin: bottom;
+  }
+
+  50% {
+    transform: rotate(-3deg);
+    transform-origin: bottom;
+  }
+  75% {
+    transform: rotate(3deg);
+    transform-origin: bottom;
+  }
 }
 
 .mainLogoTxt {
@@ -74,6 +85,8 @@ header {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-left: 0.5%;
+  margin-right: 0.5%;
 }
 
 .RecipeCard {
@@ -82,18 +95,35 @@ header {
   flex-direction: column;
   color: black !important;
   width: min-content;
+  height: 28rem;
   box-shadow: 5px 5px;
+  position: relative;
+}
+
+.RecipeCard h3 {
+  font-size: 18px;
+  width: 90%;
+  margin-left: 10px;
+  text-align: center;
 }
 
 .favIcon {
-  width: min-content;
+  width: auto;
   background-color: #ff5f1f;
   color: white;
+  border: 1px solid transparent;
+  font-size: 1em;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
 }
 
-button {
-  width: max-content;
-  margin: 1rem;
+.RecipeCard .favIcon {
+  position: absolute;
+  top: 0%;
+  right: -15%;
+  transform: translate(-90%, -10%);
+  -ms-transform: translate(-10%, -10%);
 }
 
 .footerBox {
@@ -107,5 +137,22 @@ button {
 }
 
 .RecipeImage {
-  box-shadow: orangered 5px 5px;
+  border: solid black;
+}
+
+.errorPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.active {
+  color: #ff5f1f;
+}
+
+.homePageImg {
+  box-shadow: 5px 5px black;
+  /* width: 45%; */
+  height: 45%;
 }
