@@ -1,4 +1,4 @@
-// import { useState } from 'react'
+import { useState } from 'react'
 import {
   createRoutesFromElements,
   createBrowserRouter,
@@ -7,7 +7,6 @@ import {
   Outlet,
 } from "react-router-dom";
 import '../src/style/App.css'
-// import RecipesGrid from '../components/RecipesGrid';
 import Home from "../views/Home"
 import BrowseRecipes from "../views/BrowseRecipes"
 import MyRecipes from "../views/MyRecipes"
@@ -15,11 +14,11 @@ import RecipeDetails from "../views/RecipeDetails";
 import Login from "../views/Login"
 import Signup from "../views/Signup"
 import Dashboard from "../views/Dashboard"
-
 import ErrorPage from "../views/ErrorPage"
-// import Dashboard from "../views/Dashboard"
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
+import { RecipeContextProvider } from "./context/RecipeContext";
+import { AuthContextProvider } from './context/AuthContext';
 
 
 
@@ -30,7 +29,9 @@ createRoutesFromElements(
   <Route path="/" element={<Root/>} errorElement={<ErrorPage/>}>
     <Route index element={<Home/>}/>
     <Route path="browse" element={<BrowseRecipes/>}/>
-    <Route path="browse/:recipeId" element={<RecipeDetails/>}/>
+    <Route path="browse/:recipeId" element={<RecipeDetails/> }/> 
+
+
     <Route path="my-recipes" element={<MyRecipes/>}/>
     <Route path="signup" element={<Signup/>}/>
     <Route path="login" element={<Login/>}/>
@@ -45,11 +46,13 @@ createRoutesFromElements(
 
   return (
     <>
-    
+
+<AuthContextProvider>
+    <RecipeContextProvider>
     <RouterProvider router={router}/>
-    {/* <Outlet/> */}
-     {/* <Recipes/> */}
      <Footer/>  
+     </RecipeContextProvider>
+     </AuthContextProvider>
     </>
   )
 }
