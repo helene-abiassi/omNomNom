@@ -1,22 +1,10 @@
 import '../src/style/SearchBox.css'
-
-
 import { ChangeEvent } from "react";
+import { searchFunctions } from '../src/types/customTypes';
 // import Recipes from "./RecipesGrid";
 
-export interface searchProps {
-    query: string,
-    cuisine: string,
-    diet: string,
-  }
 
-   interface searchFunctions {
-    setQuery:(query:string)=> void
-  setCuisine:(cuisine:string) => void,
-  setDiet:(diet:string) => void,
-
-
-  }
+  
 
 function SearchBox({setQuery, setCuisine, setDiet} : searchFunctions) {
     
@@ -30,7 +18,6 @@ const dietsArray = ["Gluten Free", "Ketogenic", "Vegetarian", "Lacto-Vegetarian"
 const handleSearchInput = (e : ChangeEvent<HTMLInputElement>,) => {
 //    const casedRecipeName = recipe.toLowerCase()
 const normalizedQuery = e.target.value.toLowerCase()
-// console.log(normalizedQuery);
 setQuery(normalizedQuery);
 
   }
@@ -67,9 +54,9 @@ setQuery(normalizedQuery);
         <button className="resetButton" onClick={refresh}>Reset</button>
              </div>
       <form className="radioButtons" onChange={handleDietInput}>
-      {dietsArray.map((diet:string, idd:number, key:number) => {
+      {dietsArray.map((diet, idd) => {
                     return <div ><input type="checkbox" id={idd} value={diet} key={idd} />
-                    <label htmlFor={diet} > {diet}</label><br></br></div>
+                    <label key={"1" + idd} htmlFor={diet} > {diet}</label><br></br></div>
                   })}
         
       </form><br />
