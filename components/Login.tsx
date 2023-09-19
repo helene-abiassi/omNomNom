@@ -10,10 +10,10 @@ function Login() {
       <p>Fill in the information below to log in:</p>
 
       <label htmlFor="email">Email:</label>
-      <input className="searchInputBox" type="text" placeholder='Enter e-mail...' name='email' required />
+      <input className="searchInputBox" type="text" placeholder='Enter e-mail...' name='email' autoComplete="current-email" required />
       <br /><label htmlFor="psw">Password:</label>
 
-        <input className="searchInputBox" type="password" placeholder='Enter password...' name='psw' required />
+        <input className="searchInputBox" type="password" placeholder='Enter password...' name='psw'  autoComplete="current-password" required />
 
 <br />
 <a href="#">Log in with your Google account</a>
@@ -21,10 +21,13 @@ function Login() {
     
 <br />
       <label>
-      <input type="checkbox" checked={true} name="remember"/> Remember me
-    </label><br />
+      <input type="checkbox" checked={true} name="remember"/> Remember me 
+    </label><br /> 
+    {/* //! Add onChange handler for RememberMe */}
       <button type="submit" className="signupbtn">Login</button>
     </form>
+
+    
 {/* //!Use NavigateTo after submit button to dashboard */}
 
   <img className="loginImg" src="./public/DONUT-copy.png" alt="" />
