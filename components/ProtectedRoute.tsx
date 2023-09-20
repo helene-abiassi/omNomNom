@@ -1,32 +1,48 @@
-import React, { ReactNode, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { ReactNode, useContext, useEffect, useState } from "react";
+import { AuthContext } from "../src/context/AuthContext";
+import { isUserAuth } from "../src/utilities/isUserAuth.js";
 import { Navigate } from "react-router-dom";
-import { isUserAuth } from "../utils/isUserAuth.js";
-import { useIsAuth } from "../hooks/useIsAuth.js";
+import { useIsAuth } from "../src/hooks/useIsAuth.js";
 
 type ProtectedRouteProps = {
   children: ReactNode;
 };
 
 function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { user } = useContext(AuthContext);
-  //   console.log("props :>> ", props);
-  //This bouncer will check you and let you in...or not.
+  // const { user } = useContext(AuthContext);
 
-  //   return <>{user ? children : <h2>..you are not allowed here</h2>}</>;
-
-  //   // logic using utils funciton
-  //   const allowAccess = isUserAuth(user);
-  //   console.log("allowAccess :>> ", allowAccess);
-  //     return <>{allowAccess ? children : <Navigate to="/" />}</>;
-
-  //logic using a custom Hook
+  // const allowAccess = isUserAuth(user)
 
   const allowAccess = useIsAuth();
-  return <>{allowAccess ? children : <Navigate to="/" />}</>;
+  // console.log(allowAccess);
 
-  //without using utils funciton or custom hook
-  return <>{user ? children : <Navigate to="/" />}</>;
+  const [redirect, setRedirect] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setRedirect(true);
+    }, 4000);
+  }, []);
+
+  return (
+    <div>
+      {allowAccess ? (
+        children
+      ) : (
+        <div>
+          <h3 style={{ color: "black" }}>
+            You need to log in to access your recipes (duh!)
+          </h3>
+          <img
+            className="loginImg"
+            src="https://media.giphy.com/media/8abAbOrQ9rvLG/giphy.gif"
+            alt=""
+          />
+          <p>Let us show you the way 👀 Close your eyes and count to 3...</p>
+          {redirect && <Navigate to={"/login"} />}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default ProtectedRoute;
