@@ -24,7 +24,7 @@ const goBackHome = ()=>{
         
         <h3>AAAAAACHTUNG!</h3>
 
-        <p>{error.error.message}</p>
+        <p>{error?.error.message}</p>
         <button onClick={goBackHome}>Looks like you're lost.. Get back!</button>
 
     </div>
