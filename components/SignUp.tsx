@@ -1,6 +1,7 @@
-// import React from 'react'
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 import AuthContext from "../src/context/AuthContext";
+// import { auth } from "../src/config/firebaseConfig";
+// import { createUserWithEmailAndPassword } from "firebase/auth";
 
 function SignUp() {
   const { signUp } = useContext(AuthContext);
@@ -18,13 +19,14 @@ function SignUp() {
 
   const handleSignUp = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // console.log("email, password :>> ", email, password);
     signUp(email, password);
   };
 
-  // useEffect(() => {
-  //   setEmail();
-  //   setPassword();
-  // }, []);
+  useEffect(() => {
+    setEmail(email);
+    setPassword(password);
+  }, []);
 
   return (
     <div>
