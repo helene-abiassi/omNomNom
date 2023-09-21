@@ -1,14 +1,8 @@
 // import React from 'react'
 import { Link, useNavigate, useRouteError } from 'react-router-dom'
+import { RouteErrorType } from '../src/types/customTypes';
 
-interface RouteErrorType {
-    data:string; 
-    error:{
-        message:string;
-        status:number;
-        statusText:string;
-    }
-}
+
 
 function ErrorPage() {
     const error = useRouteError() as RouteErrorType;
@@ -24,7 +18,7 @@ const goBackHome = ()=>{
         
         <h3>AAAAAACHTUNG!</h3>
 
-        <p>{error?.error.message}</p>
+        <p>{error.error?.message}</p>
         <button onClick={goBackHome}>Looks like you're lost.. Get back!</button>
 
     </div>
