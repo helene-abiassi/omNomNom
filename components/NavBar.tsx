@@ -4,18 +4,8 @@ import { NavLink } from "react-router-dom";
 import { AuthContext } from "../src/context/AuthContext";
 
 function NavBar() {
-  const { user, setUser } = useContext(AuthContext);
-  console.log(user);
-  const login = () => {
-    setUser({
-      username: "Helene",
-      email: "helene@cab,com",
-    });
-  };
-
-  const logout = () => {
-    setUser(null);
-  };
+  const { user } = useContext(AuthContext);
+  console.log("USER", user);
 
   return (
     <>
@@ -33,12 +23,13 @@ function NavBar() {
 
           <div className="loginNavBar">
             {user ? (
-              <button onClick={logout}>Log out </button>
+              <NavLink to="dashboard"> HALLO {user.email}</NavLink>
             ) : (
-              <button onClick={login}>Log in </button>
+              <div>
+                <NavLink to="login"> Log In</NavLink>
+                <span>|</span> <NavLink to="signup"> Sign up</NavLink>
+              </div>
             )}
-            {/* </NavLink> */}
-            <span>|</span> <NavLink to="signup"> Sign up</NavLink>
           </div>
         </nav>
 
