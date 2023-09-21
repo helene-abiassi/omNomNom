@@ -22,12 +22,12 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import { app } from "./config/firebaseConfig";
 
 function App() {
+  console.log("app :>> ", app);
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Root />} errorElement={<ErrorPage />}>
         <Route index element={<Home />} />
         <Route path="browse" element={<BrowseRecipes />} />
-        {/* <Route path="browse/:recipeId" element={<RecipeDetails/> }/>  */}
         {/* //! DO I WANT TO HIDE RECIPES AS WELL OR JUST KEEP IT TO MY RECIPES */}
 
         <Route
@@ -48,9 +48,17 @@ function App() {
           }
         />
 
+        <Route
+          path="dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />
-        <Route path="dashboard" element={<Dashboard />} />
       </Route>
     )
   );
