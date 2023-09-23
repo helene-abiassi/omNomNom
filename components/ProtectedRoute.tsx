@@ -1,15 +1,14 @@
 import { ReactNode, useContext, useEffect, useState } from "react";
-import { AuthContext } from "../src/context/AuthContext";
-// import { isUserAuth } from "../src/utilities/isUserAutht.js";
 import { Navigate } from "react-router-dom";
-import { useIsAuth } from "../src/hooks/useIsAuth";
+import AuthContext from "../context/AuthContext";
+import { useIsAuth } from "../hooks/useIsAuth";
 
 type ProtectedRouteProps = {
   children: ReactNode;
 };
 
 function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { user } = useContext(AuthContext);
+  const {} = useContext(AuthContext);
 
   const allowAccess = useIsAuth();
 
@@ -21,8 +20,6 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
   }, []);
 
   return (
-    // !FIGURE OUT HOW TO FIX PROTECT ROUTE, whenever we refresh it should stay in the Protected Route
-    //! =>PUT LOADER WHILE IT TAKES A SECOND TO REFRESH
 
     //+ THIN
 
