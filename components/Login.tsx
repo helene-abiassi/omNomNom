@@ -1,12 +1,13 @@
 import { ChangeEvent, FormEvent, useContext, useState } from "react";
-import AuthContext from "../src/context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 
-function Login() {
-  const { logIn } = useContext(AuthContext);
+function LogIn() {
+  const { logIn, googleLogIn } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const redirectTo = useNavigate();
 
   const handleEmailEntry = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -19,12 +20,8 @@ function Login() {
   const handleLogIn = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     logIn(email, password);
+    redirectTo("/dashboard");
   };
-
-  // useEffect(() => {
-  //   setEmail(email);
-  //   setPassword(password);
-  // }, []);
 
   return (
     <div>
@@ -42,7 +39,6 @@ function Login() {
             placeholder="Enter e-mail..."
             name="email"
             autoComplete="current-email"
-            required
           />
           <br />
           <label htmlFor="psw">Password:</label>
@@ -54,24 +50,19 @@ function Login() {
             placeholder="Enter password..."
             name="psw"
             autoComplete="current-password"
-            required
           />
 
           <br />
-          <a href="#">Log in with your Google account</a>
-
+          <button onClick={googleLogIn}>Log in with your Google account</button>
           <br />
           <label>
             <input type="checkbox" name="remember" /> Remember me
           </label>
           <br />
-          {/* //! Add onChange handler for RememberMe */}
           <button type="submit" className="signupbtn">
             Login
           </button>
         </form>
-
-        {/* //!Use NavigateTo after submit button to dashboard */}
 
         <img className="loginImg" src="./public/DONUT-copy.png" alt="" />
       </div>
@@ -85,4 +76,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LogIn;
