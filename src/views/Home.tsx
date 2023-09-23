@@ -1,6 +1,3 @@
-// import React from 'react'
-// import BrowseRecipes from './BrowseRecipes'
-
 import { useContext } from "react";
 import { AuthContext } from "../src/context/AuthContext";
 
@@ -13,6 +10,8 @@ function Home() {
       <div style={{ height: "80vh" }}>
         <img className="homePageImg" src="./public/pasta.webp" alt="" />
         <h2>Hey {user?.email}</h2>
+
+        {/* display dofferent msg for logged in/out */}
         <p style={{ alignContent: "center" }}>
           Look for fun and colorful recipes, based off what is <br />
           left in your fridge, your favorite cuisine or preferred diet!
