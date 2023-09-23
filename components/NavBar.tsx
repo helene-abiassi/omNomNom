@@ -1,7 +1,6 @@
-// import React from 'react'
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { AuthContext } from "../src/context/AuthContext";
+import AuthContext from "../context/AuthContext";
 
 function NavBar() {
   const { user } = useContext(AuthContext);
@@ -26,7 +25,7 @@ function NavBar() {
               <NavLink to="dashboard"> HALLO {user.email}</NavLink>
             ) : (
               <div>
-                <NavLink to="login"> Log In</NavLink>
+                <NavLink to="login"> Log In </NavLink>
                 <span>|</span> <NavLink to="signup"> Sign up</NavLink>
               </div>
             )}
