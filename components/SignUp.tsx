@@ -1,13 +1,13 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
-import AuthContext from "../src/context/AuthContext";
-// import { auth } from "../src/config/firebaseConfig";
-// import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 
 function SignUp() {
   const { signUp } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const redirectTo = useNavigate();
 
   const handleEmailEntry = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -21,6 +21,7 @@ function SignUp() {
     e.preventDefault();
     // console.log("email, password :>> ", email, password);
     signUp(email, password);
+    redirectTo("/dashboard");
   };
 
   useEffect(() => {
