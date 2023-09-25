@@ -23,12 +23,16 @@ function LogIn() {
     redirectTo("/dashboard");
   };
 
+  const handleGoogleLogIn = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    googleLogIn();
+  };
+
   return (
     <div>
       <br />
       <div className="container">
         <form onSubmit={handleLogIn} className="signUpForm" action={"/"}>
-          {/* <p>Please fill in the information below to create an account:</p> */}
           <p>Fill in the information below to log in:</p>
 
           <label htmlFor="email">Email:</label>
@@ -53,11 +57,10 @@ function LogIn() {
           />
 
           <br />
-          <button onClick={googleLogIn}>Log in with your Google account</button>
+          <button onClick={handleGoogleLogIn}>
+            Log in with your Google account
+          </button>
           <br />
-          <label>
-            <input type="checkbox" name="remember" /> Remember me
-          </label>
           <br />
           <button type="submit" className="signupbtn">
             Login
