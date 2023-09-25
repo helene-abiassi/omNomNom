@@ -1,11 +1,14 @@
 import { useContext } from "react";
 import "../src/style/dashboard.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../src/context/AuthContext";
+import BackButton from "../src/components/BackButton";
 
 function Dashboard() {
   const { user, logOut } = useContext(AuthContext);
-  // console.log(user);
+
+  console.log("USER-------", user);
+  console.log("USERNAME-------", user?.dsiplayName);
 
   const dashNavigateTo = useNavigate();
 
@@ -22,24 +25,12 @@ function Dashboard() {
     dashNavigateTo("/");
   };
 
-  const goBack = () => {
-    dashNavigateTo("/browse", { replace: true });
-  };
-
   return (
     <div className="dashboard" style={{ height: "60vh" }}>
-      <button
-        style={{
-          fontSize: "18pt",
-          color: "black",
-          backgroundColor: "transparent",
-        }}
-        onClick={goBack}
-      >
-        ←
-      </button>
+      <BackButton />
 
       <h2 style={{ color: "black" }}>Welcome {user?.email}!</h2>
+      {/* <h2>TEST: {user.dsiplayName}</h2> */}
       <button value={"browse"} onClick={goBrowseDash} className="dashboardBtn">
         Browse
       </button>
