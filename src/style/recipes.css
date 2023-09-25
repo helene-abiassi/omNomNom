@@ -1,0 +1,9 @@
+#scrollToTop {
+  background-color: #ff5f1f;
+  color: black;
+}
+
+#scrollDiv {
+  display: flex;
+  justify-content: flex-end;
+}
