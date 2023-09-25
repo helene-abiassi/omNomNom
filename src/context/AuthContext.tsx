@@ -6,32 +6,33 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import { User } from "../types/customTypes";
-import { auth, provider } from "../config/firebaseConfig";
+import { auth } from "../config/firebaseConfig";
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | null;
   loggedUser: User | null;
+  loader: boolean;
   setUser: (user: User) => void;
   logOut: () => void;
   signUp: (email: string, password: string) => void;
   logIn: (email: string, password: string) => void;
-  googleLogIn: (email: string, password: string) => void;
+  googleLogIn: () => void;
 }
 
 //! ADD DISPLAY NAME TO AUTHCONTEXT + SIGNUP PAGE && FIND A
 //! WAY TO ADDING IT TO GOOGLE (find a way to update the user information)
 
-//! FIND A WAY OF KEEPING THE USER LOGGED IN
-
-interface AuthContextProviderProps {
+export interface AuthContextProviderProps {
   children: ReactNode;
 }
 
 export const AuthInitContext = {
   user: null,
   loggedUser: null,
+  loader: true,
   setUser: () => console.log("not initialized"),
   logOut: () => console.log("not initialized"),
   signUp: () => console.log("not initialized"),
@@ -43,8 +44,13 @@ export const AuthContext = createContext<AuthContextType>(AuthInitContext);
 
 export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loader, setLoader] = useState(true);
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (
+    displayName: string,
+    email: string,
+    password: string
+  ) => {
     // console.log("object :>> ", email, password);
 
     try {
@@ -56,6 +62,9 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       const registeredUser = userCredential.user;
       console.log("user success :>> ", registeredUser);
       alert("YEY!");
+      await updateProfile(auth.currentUser, { displayName: displayName }).catch(
+        (err) => console.log(err)
+      );
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -83,18 +92,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     }
   };
 
-  const isUserActive = () => {
-    onAuthStateChanged(auth, (loggedUser) => {
-      if (loggedUser) {
-        const uid = loggedUser.uid;
-        console.log("uid :>> ", uid);
-        setUser(loggedUser);
-      } else {
-        setUser(null);
-      }
-    });
-  };
-
+  const provider = new GoogleAuthProvider();
 
   const googleLogIn = () => {
     signInWithPopup(auth, provider)
@@ -103,7 +101,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         // The signed-in user info.
-        // setUser(result.user);
+        const user = result.user;
         // IdP data available using getAdditionalUserInfo(result)
         // ...
       })
@@ -117,6 +115,20 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
       });
+  };
+
+  const isUserActive = () => {
+    onAuthStateChanged(auth, (loggedUser) => {
+      if (loggedUser) {
+        const uid = loggedUser.uid;
+        console.log("uid :>> ", uid);
+        setUser(loggedUser);
+        setLoader(false);
+      } else {
+        setUser(null);
+        setLoader(false);
+      }
+    });
   };
 
   useEffect(() => {
@@ -135,7 +147,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, signUp, logIn, logOut, googleLogIn }}
+      value={{ user, setUser, signUp, logIn, logOut, googleLogIn, loader }}
     >
       {children}
     </AuthContext.Provider>
