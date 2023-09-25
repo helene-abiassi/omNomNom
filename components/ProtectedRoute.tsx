@@ -8,7 +8,7 @@ type ProtectedRouteProps = {
 };
 
 function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const {} = useContext(AuthContext);
+  const { loader } = useContext(AuthContext);
 
   const allowAccess = useIsAuth();
 
@@ -19,12 +19,12 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
     }, 5000);
   }, []);
 
+
   return (
-
-    //+ THIN
-
     <div>
-      {allowAccess ? (
+      {loader ? (
+        <h1>LOADING....</h1>
+      ) : allowAccess ? (
         children
       ) : (
         <div>
