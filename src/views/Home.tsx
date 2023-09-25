@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../src/context/AuthContext";
+import { Link } from "react-router-dom";
 
 function Home() {
   const { user } = useContext(AuthContext);
@@ -16,7 +17,17 @@ function Home() {
           Look for fun and colorful recipes, based off what is <br />
           left in your fridge, your favorite cuisine or preferred diet!
         </p>
-        <p>Become a member and build your own hangry pantry!</p>
+
+        {user ? (
+          <></>
+        ) : (
+          <p>
+            <strong>
+              <Link to={"signup"}>Become a member</Link> and build your own
+              hangry pantry!
+            </strong>
+          </p>
+        )}
 
         <a
           style={{
