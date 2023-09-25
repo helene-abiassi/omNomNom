@@ -4,10 +4,16 @@ import AuthContext from "../context/AuthContext";
 
 function SignUp() {
   const { signUp } = useContext(AuthContext);
+  //* no need to import user (?)
 
+  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const redirectTo = useNavigate();
+
+  const handleDisplayNameEntry = (e: ChangeEvent<HTMLInputElement>) => {
+    setDisplayName(e.target.value);
+  };
 
   const handleEmailEntry = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -20,11 +26,12 @@ function SignUp() {
   const handleSignUp = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // console.log("email, password :>> ", email, password);
-    signUp(email, password);
+    signUp(displayName, email, password);
     redirectTo("/dashboard");
   };
 
   useEffect(() => {
+    setDisplayName(displayName);
     setEmail(email);
     setPassword(password);
   }, []);
@@ -35,6 +42,15 @@ function SignUp() {
       <div className="container">
         <form className="signUpForm" onSubmit={handleSignUp}>
           <p>Fill in the information below to sign up:</p>
+          <label htmlFor="username">Username:</label>
+          <input
+            onChange={handleDisplayNameEntry}
+            className="searchInputBox"
+            type="text"
+            placeholder="Choose a username"
+            name="username"
+          />
+          <br />
           <label htmlFor="email">Email:</label>
           <input
             onChange={handleEmailEntry}
@@ -54,14 +70,6 @@ function SignUp() {
             required
           />
           <br />
-          <a href="#">Sign up with your Google account</a>
-          {/* <label>
-            <input type="checkbox" checked={true} name="remember" /> Remember me
-          </label> */}
-          <p style={{ textAlign: "left" }}>
-            By creating an account, you <br />
-            agree to our <a href="#">Terms & Privacy</a>.
-          </p>
           <button type="submit" className="signupbtn">
             Sign up
           </button>
