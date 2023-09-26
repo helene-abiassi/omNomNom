@@ -2,6 +2,7 @@ import { ReactNode, createContext, useEffect, useState } from "react";
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  deleteUser,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -17,13 +18,11 @@ export interface AuthContextType {
   loader: boolean;
   setUser: (user: User) => void;
   logOut: () => void;
-  signUp: (email: string, password: string) => void;
-  logIn: (email: string, password: string) => void;
+  signUp: (displayName: string, email: string, password: string) => void;
+  logIn: (displayName: string, email: string, password: string) => void;
+  deleteMyUser: () => void;
   googleLogIn: () => void;
 }
-
-//! ADD DISPLAY NAME TO AUTHCONTEXT + SIGNUP PAGE && FIND A
-//! WAY TO ADDING IT TO GOOGLE (find a way to update the user information)
 
 export interface AuthContextProviderProps {
   children: ReactNode;
@@ -37,6 +36,7 @@ export const AuthInitContext = {
   logOut: () => console.log("not initialized"),
   signUp: () => console.log("not initialized"),
   logIn: () => console.log("not initialized"),
+  deleteMyUser: () => console.log("not initialized"),
   googleLogIn: () => console.log("not initialized"),
 };
 
@@ -61,14 +61,12 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       );
       const registeredUser = userCredential.user;
       console.log("user success :>> ", registeredUser);
-      alert("YEY!");
-      await updateProfile(auth.currentUser, { displayName: displayName }).catch(
-        (err) => console.log(err)
-      );
+      // alert("YEY!");
+      await updateProfile(registeredUser, { displayName: displayName });
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log("error oh nein! :>> ", errorMessage);
+      const errorCode = "";
+      const errorMessage = "";
+      console.log("registration failed :>> ", error);
       alert("OH NEIN!" + errorMessage);
     }
   };
@@ -82,8 +80,8 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       );
       const loggedUser = userCredential.user;
       // console.log("user success :>> ", loggedUser);
-      alert("WILKOMMEN WIEDER!");
       setUser(loggedUser);
+      // setLoader(false);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -113,6 +111,18 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         const email = error.customData.email;
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log("credential :>> ", credential);
+      });
+  };
+
+  const deleteMyUser = () => {
+    const user = auth.currentUser;
+    deleteUser(user)
+      .then(() => {
+        // User deleted.
+      })
+      .catch((error) => {
+        // An error ocurred
         // ...
       });
   };
@@ -147,7 +157,16 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, signUp, logIn, logOut, googleLogIn, loader }}
+      value={{
+        user,
+        setUser,
+        signUp,
+        logIn,
+        logOut,
+        googleLogIn,
+        loader,
+        deleteMyUser,
+      }}
     >
       {children}
     </AuthContext.Provider>
