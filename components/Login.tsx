@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
 function LogIn() {
+  console.log("%c login", "color:green");
+
   const { logIn, googleLogIn } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
