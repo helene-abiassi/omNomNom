@@ -2,24 +2,28 @@ import { ReactNode, useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { useIsAuth } from "../hooks/useIsAuth";
+import ProtecterRouteErrorPage from "./ProtecterRouteErrorPage";
 
 type ProtectedRouteProps = {
   children: ReactNode;
 };
 
 function ProtectedRoute({ children }: ProtectedRouteProps) {
+  console.log("%c protected route", "color:orange");
+
   const { loader } = useContext(AuthContext);
 
   const allowAccess = useIsAuth();
 
-  const [redirect, setRedirect] = useState(false);
-  useEffect(() => {
-    setTimeout(() => {
-      setRedirect(true);
-    }, 5000);
-  }, []);
-
-
+  // const isRedirect = () => {
+  //   setTimeout(() => {
+  //     return 3;
+  //   }, 5000);
+  // };
+  const showme = () => {
+    console.log("loader", loader);
+    console.log("allowAccess", allowAccess);
+  };
   return (
     <div>
       {loader ? (
@@ -27,18 +31,7 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
       ) : allowAccess ? (
         children
       ) : (
-        <div>
-          <h3 style={{ color: "black" }}>
-            You need to log in to access your recipes (duh!)
-          </h3>
-          <img
-            className="loginImg"
-            src="https://media.giphy.com/media/8abAbOrQ9rvLG/giphy.gif"
-            alt=""
-          />
-          <p>Let us show you the way 👀 Close your eyes and count to 3...</p>
-          {redirect && <Navigate to={"/login"} />}
-        </div>
+        <>{loader && allowAccess && <ProtecterRouteErrorPage />}</>
       )}
     </div>
   );
