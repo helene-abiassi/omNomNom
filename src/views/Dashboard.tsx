@@ -5,10 +5,7 @@ import AuthContext from "../src/context/AuthContext";
 import BackButton from "../src/components/BackButton";
 
 function Dashboard() {
-  const { user, logOut } = useContext(AuthContext);
-
-  console.log("USER-------", user);
-  console.log("USERNAME-------", user?.dsiplayName);
+  const { user, logOut, deleteMyUser } = useContext(AuthContext);
 
   const dashNavigateTo = useNavigate();
 
@@ -25,11 +22,16 @@ function Dashboard() {
     dashNavigateTo("/");
   };
 
+  const deleteAccount = () => {
+    deleteMyUser();
+    dashNavigateTo("/");
+  };
+
   return (
     <div className="dashboard" style={{ height: "60vh" }}>
       <BackButton />
+      <h2 style={{ color: "black" }}>Welcome {user?.displayName}!</h2>
 
-      <h2 style={{ color: "black" }}>Welcome {user?.email}!</h2>
       {/* <h2>TEST: {user.dsiplayName}</h2> */}
       <button value={"browse"} onClick={goBrowseDash} className="dashboardBtn">
         Browse
@@ -46,9 +48,7 @@ function Dashboard() {
         Log out
       </button>
 
-      <a style={{ marginTop: "5rem" }} href="/">
-        Delete your account
-      </a>
+      <button onClick={deleteAccount}> Delete your account </button>
     </div>
   );
 }
