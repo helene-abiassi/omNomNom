@@ -1,29 +1,25 @@
 // import React from 'react'
-import { Link, useNavigate, useRouteError } from 'react-router-dom'
-import { RouteErrorType } from '../src/types/customTypes';
-
-
+import { useNavigate, useRouteError } from "react-router-dom";
+import { RouteErrorType } from "../src/types/customTypes";
 
 function ErrorPage() {
-    const error = useRouteError() as RouteErrorType;
+  const error = useRouteError() as RouteErrorType;
 
-const navigateTo = useNavigate()
-const goBackHome = ()=>{
-  navigateTo("browse")
-}
+  const navigateTo = useNavigate();
+  const goBackHome = () => {
+    navigateTo("browse");
+  };
 
   return (
     <>
-    <div className="errorPage" style={{height: "80vh" }} >
-        
+      <div className="errorPage" style={{ height: "80vh" }}>
         <h3>AAAAAACHTUNG!</h3>
 
         <p>{error.error?.message}</p>
         <button onClick={goBackHome}>Looks like you're lost.. Get back!</button>
-
-    </div>
+      </div>
     </>
-  )
+  );
 }
 
-export default ErrorPage
+export default ErrorPage;
