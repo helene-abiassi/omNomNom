@@ -5,8 +5,8 @@ import SearchBox from "./SearchBox";
 import { RecipeType } from "../types/customTypes";
 import BackToTop from "./BackToTop";
 
-const apiKey = "649ac07b69a74c6b9346b453f3d52d72";
-// const apiKey = "782103823d1a4893a9bfca971f275b33";
+// const apiKey = "649ac07b69a74c6b9346b453f3d52d72";
+const apiKey = "782103823d1a4893a9bfca971f275b33";
 
 function RecipesGrid() {
   // const {recipes, query, cuisine, diet,  fetchRecipes, setQuery,
