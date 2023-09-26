@@ -22,7 +22,7 @@ function NavBar() {
 
           <div className="loginNavBar">
             {user ? (
-              <NavLink to="dashboard"> HALLO {user.email}</NavLink>
+              <NavLink to="dashboard"> HALLO {user?.displayName}</NavLink>
             ) : (
               <div>
                 <NavLink to="login"> Log In </NavLink>
