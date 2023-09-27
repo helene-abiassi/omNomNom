@@ -66,7 +66,6 @@ function Comments() {
       message: newComment,
       date: new Date(),
     };
-    // console.log("newCommentPost :>> ", newCommentPost);
     // const docRef = await addDoc(collection(db, "comments"), newCommentPost);
     const docRef = await addDoc(collection(db, `${recipeId}`), newCommentPost);
     console.log("Document written with ID: ", docRef.id);
@@ -79,7 +78,7 @@ function Comments() {
       const commentsArray: CommentsType[] = [];
       querySnapshot.forEach((doc) => {
         console.log("doc :>> ", doc.id);
-        const message = { ...doc.data(), id: doc.id } as CommentsType; // be careful with the use of type assertion (ok, this time was me...)
+        const message = { ...doc.data(), id: doc.id } as CommentsType; 
         console.log("my new message :>> ", message);
         commentsArray.push(message);
       });
@@ -122,7 +121,7 @@ function Comments() {
               <p>{formatDate(comment.date)}</p>
               {/* <button onClick={deleteComments}>Delete</button> */}
               {user?.email === comment.author && (
-                <button onClick={() => deleteComment(comment.id)}>
+                <button onClick={() => deleteComment(comment)}>
                   Delete
                 </button>
               )}
