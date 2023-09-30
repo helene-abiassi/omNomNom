@@ -1,8 +1,14 @@
 import "../style/SearchBoxs.css";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { searchFunctions } from "../types/customTypes";
 
-function SearchBox({ setQuery, setCuisine, setDiet }: searchFunctions) {
+function SearchBox({
+  setQuery,
+  setCuisine,
+  setDiet,
+  diet,
+  query,
+}: searchFunctions) {
   const cuisinesArray = [
     "African",
     "Asian",
@@ -44,21 +50,48 @@ function SearchBox({ setQuery, setCuisine, setDiet }: searchFunctions) {
     "Paleo",
   ];
 
+  const [selectedCuisine, setSelectedCuisine] = useState("");
+
   const handleSearchInput = (e: ChangeEvent<HTMLInputElement>) => {
-    //    const casedRecipeName = recipe.toLowerCase()
     const normalizedQuery = e.target.value.toLowerCase();
     setQuery(normalizedQuery);
   };
 
   const handleCuisineInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setCuisine(e.target.value);
+    const selectedValue: string = e.target.value;
+    setCuisine(selectedValue);
+    setSelectedCuisine(selectedValue);
   };
 
   const handleDietInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setDiet(e.target.value);
+    const selectedDiet: string = e.target.value;
+    const updatedDiet: string[] = selectedDiet
+      .split(",")
+      .map((item) => item.trim());
+    console.log("diet :>> ", diet);
+    setDiet((prevDiet) => {
+      if (prevDiet.includes(selectedDiet)) {
+        return prevDiet.filter((item) => item !== selectedDiet);
+      } else {
+        return [...prevDiet, ...updatedDiet];
+      }
+    });
   };
 
-  const refresh = () => window.location.reload();
+  const resetFilters = () => {
+    setCuisine("");
+    setSelectedCuisine("");
+    setQuery("");
+    setDiet([]);
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+  };
+
+  useEffect(() => {
+    console.log("diet", diet);
+  }, [diet]);
 
   return (
     <div className="mainSearchBox">
@@ -68,10 +101,10 @@ function SearchBox({ setQuery, setCuisine, setDiet }: searchFunctions) {
             <input
               className="searchInputBox"
               type="text"
+              value={query}
               placeholder="Search..."
               onChange={handleSearchInput}
             />
-            {/* <p>Enter up to 3 ingredients, <br></br> separated by a ,comma,</p> */}
           </div>
           <form>
             <select
@@ -79,8 +112,9 @@ function SearchBox({ setQuery, setCuisine, setDiet }: searchFunctions) {
               className="searchByCuiBox"
               name="cuisine"
               id="cuisine"
+              value={selectedCuisine}
             >
-              <option value={"All"}>Search by cuisine</option>
+              <option value={""}>Search by cuisine</option>
               {cuisinesArray &&
                 cuisinesArray.map((cuisine, idc) => {
                   return (
@@ -91,7 +125,7 @@ function SearchBox({ setQuery, setCuisine, setDiet }: searchFunctions) {
                 })}
             </select>
           </form>
-          <button className="resetButton" onClick={refresh}>
+          <button className="resetButton" onClick={resetFilters}>
             Reset
           </button>
         </div>
