@@ -1,22 +1,20 @@
 // import React from 'react'
 
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
 function FavoriteButton() {
   const { user } = useContext(AuthContext);
-  const navigateTo = useNavigate();
-
-  // console.log('recipe.title :>> ', recipe.title);
+  // const navigateTo = useNavigate();
 
   const saveToFavorites = () => {
     console.log("Saved!");
   };
 
   const redirectLogIn = () => {
-    navigateTo("/login");
-    alert("You need to be logged to be able to save recipes!");
+    // navigateTo("/login");
+    alert("You need to log in to be able to save recipes!");
   };
 
   const handleFavoriteCLick = () => {
