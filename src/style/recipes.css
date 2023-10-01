@@ -7,3 +7,33 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.backHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.backHeader h2 {
+  width: 25rem;
+}
+
+.recipePageImg {
+  width: 40%;
+  margin-bottom: 0%;
+  position: relative;
+  bottom: -20px;
+  box-shadow: 5px 5px black;
+}
+
+.recipePageHeader {
+  display: flex;
+  flex-direction: row;
+  padding-left: 25px;
+}
+
+.recipePageHeader h3 {
+  position: relative;
+  padding-right: 600px;
+}
