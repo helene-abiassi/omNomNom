@@ -4,30 +4,57 @@ import AuthContext from "../context/AuthContext";
 
 function SignUp() {
   const { signUp } = useContext(AuthContext);
-  //* no need to import user (?)
 
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordType, setPasswordType] = useState("password");
+  const [showOrHide, setShowOrHide] = useState("show");
   const redirectTo = useNavigate();
 
+  const changePasswordType = () => {
+    if (passwordType === "password") {
+      setPasswordType("text");
+      setShowOrHide("hide");
+      return;
+    }
+    setPasswordType("password");
+    setShowOrHide("show");
+  };
+
   const handleDisplayNameEntry = (e: ChangeEvent<HTMLInputElement>) => {
-    setDisplayName(e.target.value);
+    const displayNameInput = e.target.value;
+    setDisplayName(displayNameInput);
   };
 
   const handleEmailEntry = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
+    const emailInput = e.target.value;
+    setEmail(emailInput);
   };
 
   const handlePswEntry = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+    const pswInput = e.target.value;
+    setPassword(pswInput);
   };
 
   const handleSignUp = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log("email, password :>> ", email, password);
-    signUp(displayName, email, password);
-    redirectTo("/dashboard");
+
+    if (!email.includes("@") && password.length < 6) {
+      alert(
+        "Your email seems to be invalid. \n Your password should be at least 6 characters"
+      );
+      redirectTo("/signup");
+    } else if (password.length < 6) {
+      alert("Your password should be at least 6 characters");
+      redirectTo("/signup");
+    } else if (!email.includes("@")) {
+      alert("Your email seems to be invalid");
+      redirectTo("/signup");
+    } else {
+      signUp(displayName, email, password);
+      redirectTo("/dashboard");
+    }
   };
 
   useEffect(() => {
@@ -47,7 +74,7 @@ function SignUp() {
             onChange={handleDisplayNameEntry}
             className="searchInputBox"
             type="text"
-            placeholder="Choose a username"
+            placeholder="Choose username..."
             name="username"
           />
           <br />
@@ -64,12 +91,18 @@ function SignUp() {
           <input
             onChange={handlePswEntry}
             className="searchInputBox"
-            type="password"
+            type={passwordType}
             placeholder="Enter password..."
             name="psw"
             required
           />
-          <br />
+          <span
+            onClick={changePasswordType}
+            className="hide-password"
+            style={{ cursor: "pointer" }}
+          >
+            {showOrHide}
+          </span>
           <button type="submit" className="signupbtn">
             Sign up
           </button>
@@ -79,7 +112,10 @@ function SignUp() {
       </div>
       <br />
       <p>
-        Already have an account? <a href="login">Log in!</a>
+        Already have an account?{" "}
+        <a className="resetButton" href="login">
+          Log in!
+        </a>
       </p>
     </div>
   );
