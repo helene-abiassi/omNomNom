@@ -9,20 +9,19 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-// import React from "react";
 import { db } from "../config/firebaseConfig";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import "../style/Comments.css";
 import AuthContext from "../context/AuthContext";
 import { useParams } from "react-router-dom";
 
-interface CommentsType {
+export interface CommentsType {
   author: string;
   message: string;
   date: Timestamp | Date;
   id?: string;
 }
-// potential TS solution for comments with ID and without : one interface(or maybe Type alias) that extends from another one
+
 function Comments() {
   const { user } = useContext(AuthContext);
   const [comments, setComments] = useState<CommentsType[] | null>(null);
@@ -40,6 +39,7 @@ function Comments() {
       commentsArray.push(doc.data() as CommentsType);
     });
     setComments(commentsArray);
+    console.log("getComments() :>> ", getComments()); //!
   };
 
   const formatDate = (date: Timestamp | Date): string => {
@@ -54,7 +54,6 @@ function Comments() {
   };
 
   const handleNewComments = (e: ChangeEvent<HTMLInputElement>) => {
-    // console.log(e.target.value);
     setNewComment(e.target.value);
   };
 
@@ -62,43 +61,45 @@ function Comments() {
     console.log("newComment", newComment);
 
     const newCommentPost: CommentsType = {
-      author: user!.email!,
+      author: user!.displayName!,
       message: newComment,
       date: new Date(),
     };
-    // const docRef = await addDoc(collection(db, "comments"), newCommentPost);
     const docRef = await addDoc(collection(db, `${recipeId}`), newCommentPost);
     console.log("Document written with ID: ", docRef.id);
+    setNewComment("");
   };
 
   const getRealTimeComments = () => {
-    const q = query(collection(db, "comments"), orderBy("date", "desc"));
-    // const q = query(collection(db, "71406"), orderBy("date", "desc"));
+    // const q = query(collection(db, "comments"), orderBy("date", "desc"));
+    const q = query(collection(db, `${recipeId}`), orderBy("date", "desc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const commentsArray: CommentsType[] = [];
       querySnapshot.forEach((doc) => {
         console.log("doc :>> ", doc.id);
-        const message = { ...doc.data(), id: doc.id } as CommentsType; 
+        const message = { ...doc.data(), id: doc.id } as CommentsType;
+        // be careful with the use of type assertion (ok, this time was me...)
         console.log("my new message :>> ", message);
         commentsArray.push(message);
       });
       setComments(commentsArray);
-      console.log("commentsArray :>> ", commentsArray);
+      // console.log("commentsArray :>> ", commentsArray);
     });
   };
 
-  const deleteComment = async (commentId) => {
+  const deleteComment = async (commentId: string) => {
     const commentsArray: CommentsType[] = [];
     console.log("commentId :>> ", commentId);
     try {
-      // const commentId = e.target.id;
-      console.log("delete msgs", commentId);
-      const deletedMeesage = await deleteDoc(doc(db, "comments", commentId));
-      console.log("successfull :>> ", deletedMeesage);
+      if (window.confirm("Are you SURE you want to delete your comment?")) {
+        const deletedMessage = await deleteDoc(
+          doc(db, `${recipeId}`, commentId)
+        );
+        console.log("successfull :>> ", deletedMessage);
+      }
     } catch (error) {
       console.log("error", error);
     }
-    // setComments(commentsArray);
   };
 
   useEffect(() => {
@@ -107,27 +108,65 @@ function Comments() {
 
   return (
     <div className="commentsSection">
-      <div className="newComment">
-        <input onChange={handleNewComments} type="text" />
-        <button onClick={submitComment}>Post</button>
+      <div className="commentHeader">
+        <h3 style={{ color: "white" }}>Comments:</h3>
+        <span style={{ width: "300px", borderTop: "white solid 1px" }}>
+          <p style={{ color: "white" }}>
+            Leave a comment below and let us know what you thought of the
+            recipe!
+          </p>
+        </span>
       </div>
+      <br />
+      <div className="newComment">
+        <input
+          className="commentInput"
+          placeholder="Write a comment..."
+          onChange={handleNewComments}
+          type="text"
+          value={newComment}
+        />
+        <button id="submitButton" onClick={submitComment}>
+          Submit
+        </button>
+      </div>
+      <>
+        {comments ? (
+          <div>
+            {comments.length > 0 ? (
+              comments.map((comment, commentIndex) => {
+                return (
+                  <div className="singleComment" key={commentIndex}>
+                    <div className="singleCommentHeader">
+                      <h4 className="commentAuthor">{comment.author}</h4>
 
-      {comments &&
-        comments.map((comment, commentIndex) => {
-          return (
-            <div className="singleComment" key={commentIndex}>
-              <p>{comment.author}</p>
-              <p>{comment.message}</p>
-              <p>{formatDate(comment.date)}</p>
-              {/* <button onClick={deleteComments}>Delete</button> */}
-              {user?.email === comment.author && (
-                <button onClick={() => deleteComment(comment)}>
-                  Delete
-                </button>
-              )}
-            </div>
-          );
-        })}
+                      <p className="commentDate">{formatDate(comment.date)}</p>
+                    </div>
+                    <div className="commentBody">
+                      <p className="commentMsg">{comment.message}</p>
+                      {user?.displayName === comment.author && (
+                        <button
+                          id="deleteButton"
+                          onClick={() => deleteComment()}
+                        >
+                          Delete
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <>
+                <p style={{ color: "white" }}>
+                  Be the first one to leave a comment!
+                </p>
+                <br />
+              </>
+            )}
+          </div>
+        ) : null}
+      </>
     </div>
   );
 }
