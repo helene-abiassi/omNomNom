@@ -49,7 +49,10 @@ export interface RecipeCardProp {
   export interface searchFunctions {
     setQuery:(query:string)=> void
   setCuisine:(cuisine:string) => void,
-  setDiet:(diet:string) => void,
+  setDiet:(diet:string[]) => void,
+  diet: string,
+  query: string,
+  
   }
 
   export interface RouteErrorType {
@@ -64,5 +67,6 @@ export interface RecipeCardProp {
 export interface User {
   displayName:string ,
   email:string,
-  password:string
+  password:string,
+  uid:number,
 }
