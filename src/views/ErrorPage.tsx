@@ -7,12 +7,12 @@ function ErrorPage() {
 
   const navigateTo = useNavigate();
   const goBackHome = () => {
-    navigateTo("browse");
+    navigateTo("/browse");
   };
 
   return (
     <>
-      <div className="errorPage" style={{ height: "80vh" }}>
+      <div className="errorPage" style={{ height: "80vh", color: "black" }}>
         <h3>AAAAAACHTUNG!</h3>
 
         <p>{error.error?.message}</p>
