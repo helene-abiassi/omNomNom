@@ -14,21 +14,21 @@ import Login from "../views/Login";
 import Signup from "../views/Signup";
 import Dashboard from "../views/Dashboard";
 import ErrorPage from "../views/ErrorPage";
-import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
 import { RecipeContextProvider } from "./context/RecipeContext";
 import { AuthContextProvider } from "./context/AuthContext";
-import ProtectedRoute from "../components/ProtectedRoute";
-import { app } from "./config/firebaseConfig";
+import { app, db } from "./config/firebaseConfig";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  console.log("app :>> ", app);
+  // console.log("app :>> ", app);
+  console.log("db :>> ", db);
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Root />} errorElement={<ErrorPage />}>
         <Route index element={<Home />} />
         <Route path="browse" element={<BrowseRecipes />} />
-        {/* //! DO I WANT TO HIDE RECIPES AS WELL OR JUST KEEP IT TO MY RECIPES */}
 
         <Route
           path="browse/:recipeId"
@@ -48,14 +48,7 @@ function App() {
           }
         />
 
-        <Route
-          path="dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="dashboard" element={<Dashboard />} />
 
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />
