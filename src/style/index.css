@@ -47,11 +47,13 @@ button {
   padding: 5px;
   height: min-content;
   margin: 1rem;
+  cursor: pointer;
+
 
 
 }
 button:hover {
-  background-color: black
+  background-color:#FE347E
 }
 button:focus,
 button:focus-visible {
