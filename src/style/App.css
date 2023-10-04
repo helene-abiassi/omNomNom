@@ -6,28 +6,6 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
 .card {
   padding: 2em;
 }
@@ -51,27 +29,50 @@ header {
 }
 
 .mainLogo {
-  height: 8rem;
+  height: 6rem;
 }
 
 .mainLogo:hover {
   animation-name: shake;
-  animation-duration: 0.8s;
+  animation-duration: 1s;
+}
+
+.redirectTwirl {
+  animation-name: shake;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  height: 250px;
 }
 
 @keyframes shake {
   25% {
-    transform: rotate(3deg);
+    transform: rotate(10deg);
     transform-origin: bottom;
   }
 
   50% {
-    transform: rotate(-3deg);
+    transform: rotate(-10deg);
     transform-origin: bottom;
   }
   75% {
-    transform: rotate(3deg);
+    transform: rotate(10deg);
     transform-origin: bottom;
+  }
+}
+
+.loader {
+  animation-name: twirl;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  height: 20rem;
+}
+
+@keyframes twirl {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -84,7 +85,7 @@ header {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   margin-left: 0.5%;
   margin-right: 0.5%;
 }
@@ -118,26 +119,48 @@ header {
   transition: border-color 0.25s;
 }
 
+.favIcon:checked {
+  color: black;
+}
+
 .RecipeCard .favIcon {
   position: absolute;
   top: 0%;
-  right: -15%;
+  right: -8%;
   transform: translate(-90%, -10%);
   -ms-transform: translate(-10%, -10%);
 }
 
-.footerBox {
-  background-color: #ff5f1f;
-  height: 3rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  color: black;
+.RecipeCard h4 {
+  /* width: 75%; */
+  align-self: center;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
+.footerBox {
+  background-color: #ff5f1f;
+  height: 4rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-size: medium;
+}
+
+.footerText {
+  display: flex;
+  flex-direction: column;
+}
 .RecipeImage {
   border: solid black;
+}
+
+.footerImg {
+  max-width: 100%;
+  max-height: 90%;
+  margin: 50px;
 }
 
 .errorPage {
@@ -153,6 +176,37 @@ header {
 
 .homePageImg {
   box-shadow: 5px 5px black;
-  /* width: 45%; */
-  height: 45%;
+  width: 40%;
+  height: 40%;
+}
+
+.linkButton {
+  background-color: #fe347e;
+  color: white;
+  font-weight: bolder;
+  justify-items: flex-end;
+  align-self: center;
+  border-radius: 10px;
+  width: 6rem;
+  padding: 10px;
+}
+
+.linkButton:hover {
+  background-color: black;
+}
+
+.recipeCard {
+  background-color: azure;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+  /* width: 50%; */
+  padding: 3%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0%;
+  width: 70%;
+  box-shadow: 5px 5px;
 }
