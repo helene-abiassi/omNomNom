@@ -1,116 +1,160 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useContext, useState } from "react";
 import AuthContext from "../src/context/AuthContext";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  onSnapshot,
+  deleteDoc,
+  getDocs,
+  collection,
+} from "firebase/firestore";
 import { db } from "../src/config/firebaseConfig";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-export interface FavoriteRecipesType {
-  recipe: [
-    {
-      id: number;
-      image: string;
-      readyInMinutes: number;
-      servings: number;
-      title: string;
-      url: string;
-    }
-  ];
+export interface FavoriteRecipeType {
+  id: number;
+  image: string;
+  readyInMinutes: number;
+  servings: number;
+  title: string;
+  url: string;
 }
 
 function MyRecipes() {
   const { user } = useContext(AuthContext);
-  const [favoritesArray, setFavoritesArray] = useState<FavoriteRecipesType[]>(
-    []
-  );
-  const [isBlack, setIsBlack] = useState(true);
-
-  const handleFavoriteClick = () => {
-    user
-      ? setIsBlack((prev) => !prev)
-      : alert("You need to log in to be able to save recipes!");
+  const [favoritesArray, setFavoritesArray] = useState<
+    FavoriteRecipeType[] | null
+  >(null);
+  const navigateTo = (url) => {
+    useNavigate(url);
   };
 
-
   const getFavorites = async () => {
-    try {
-      const docRef = doc(db, "favoriteRecipesCollection", `${user?.uid}`);
-      const docSnap = await getDoc(docRef);
-      console.log("docSnap :>> ", docSnap.data());
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        if (data && data.recipe) {
-          setFavoritesArray([{ recipe: data.recipe }]);
-        } else {
-          setFavoritesArray([]);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
+    const querySnapshot = await getDocs(
+      collection(db, "favoriteRecipesCollection", `${user?.uid}`, "recipes")
+    );
+    const favArray: FavoriteRecipeType[] = [];
+
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+      favArray.push(doc.data() as FavoriteRecipeType);
+    });
+    setFavoritesArray(favArray);
+  };
+
+  const getRealTimeFavorites = () => {
+    if (user) {
+      const favRef = collection(
+        db,
+        "favoriteRecipesCollection",
+        `${user.uid}`,
+        "recipes"
+      );
+
+      const unsubscribe = onSnapshot(favRef, (querySnapshot) => {
+        const favArray: FavoriteRecipeType[] = [];
+
+        querySnapshot.forEach((doc) => {
+          favArray.push({
+            id: doc.id,
+            ...doc.data(),
+          } as FavoriteRecipeType);
+        });
+
+        setFavoritesArray(favArray);
+      });
+
+      return () => {
+        unsubscribe();
+      };
     }
   };
 
-  console.log("user.uid :>> ", user.uid);
+  const handleDeleteClick = async (id) => {
+    try {
+      if (user) {
+        const docRef = doc(
+          db,
+          "favoriteRecipesCollection",
+          `${user.uid}`,
+          "recipes",
+          `${id}`
+        );
+        if (window.confirm("Are you sure you want to delete this recipe?")) {
+          await deleteDoc(docRef);
+        }
+        console.log("Recipe successfully deleted.");
+
+        setFavoritesArray((prevFavorites) =>
+          prevFavorites!.filter((favorite) => favorite.id !== id)
+        );
+      }
+    } catch (error) {
+      console.error("Error deleting recipe:", error);
+    }
+  };
 
   useEffect(() => {
-    getFavorites();
-  }, []);
+    const unsubscribe = getRealTimeFavorites();
+
+    return () => {
+      unsubscribe();
+    };
+  }, [user]);
 
   return (
-    <div>
-      <p>Browse through your favorite recipes!</p>
+    <div style={{ minHeight: "60vh" }}>
+      <h3 style={{ color: "black" }}>
+        Browse through your favorite recipes 🍳!
+      </h3>
       <br />
-  
-      <>
-        {favoritesArray ? (
-          <div className="RecipeContainer">
-            {favoritesArray ? (
-              favoritesArray.map((favorite, favIndex) => {
-                return (
-                  <div
-                    className="RecipeCard"
-                    key={favIndex}
-                    style={{ height: "max-content", width: "max-content" }}
-                  >
-                    {/* <FavoriteButton /> */}
-                    <button
-                      style={{ color: isBlack ? "black" : "white" }}
-                      onClick={handleFavoriteClick}
-                      className="favIcon"
-                    >
-                      ❤
-                    </button>
+      {favoritesArray !== null ? (
+        <div className="RecipeContainer">
+          {favoritesArray.length > 0 ? (
+            favoritesArray.map((favorite, favIndex) => (
+              <div
+                className="RecipeCard"
+                key={favIndex}
+                style={{ height: "max-content", width: "max-content" }}
+              >
+                <button
+                  // style={{ color: isBlack ? "black" : "white" }}
+                  onClick={() => handleDeleteClick(favorite.id)}
+                  className="favIcon deleteIcon"
+                  key={favorite.id}
+                >
+                  <strong>X</strong>
+                </button>
+                <img
+                  src={favorite.image}
+                  alt=""
+                  style={{
+                    maxHeight: "100%",
+                    maxWidth: "100%",
+                  }}
+                />
+                <h4>{favorite.title}</h4>
+                <p>
+                  Ready in {favorite.readyInMinutes} mins.
+                  <br />
+                  Serves {favorite.servings} humans.
+                </p>
 
-                    <img
-                      style={{ width: "15rem" }}
-                      src={favorite.recipe.image}
-                      alt=""
-                    />
-                    <h4>{favorite.recipe.title}</h4>
-                    <p>
-                      Ready in {favorite.recipe.readyInMinutes} mns.
-                      <br />
-                      Serves {favorite.recipe.servings} humans.
-                    </p>
-                    <a
-                      className="linkButton"
-                      href={`/browse/${favorite.recipe.id}`}
-                    >
-                      View More
-                    </a>
-                    <br />
-                  </div>
-                );
-              })
-            ) : (
-              <>
-                <p>Nothing saved yet...</p>
-                <Link className="resetButton" to={"/browse"}>
-                  Browse some of our recipes 🥑
+                <Link className="linkButton" to={`${favorite.url}`}>
+                  View More
                 </Link>
-              </>
-            )}
-          </div>
-        ) : null}
-      </>
+                <br />
+              </div>
+            ))
+          ) : (
+            <div>
+              <p>Nothing saved yet...</p>
+              <Link className="resetButton" to={"/browse"}>
+                Browse some of our recipes 🥑
+              </Link>
+            </div>
+          )}
+        </div>
+      ) : null}
       <br />
     </div>
   );
