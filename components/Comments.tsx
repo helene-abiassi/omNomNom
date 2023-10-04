@@ -39,7 +39,7 @@ function Comments() {
       commentsArray.push(doc.data() as CommentsType);
     });
     setComments(commentsArray);
-    console.log("getComments() :>> ", getComments()); //!
+    console.log("getComments() :>> ", getComments());
   };
 
   const formatDate = (date: Timestamp | Date): string => {
@@ -138,16 +138,18 @@ function Comments() {
                 return (
                   <div className="singleComment" key={commentIndex}>
                     <div className="singleCommentHeader">
-                      <h4 className="commentAuthor">{comment.author}</h4>
+                      <h4>{comment.author}</h4>
 
-                      <p className="commentDate">{formatDate(comment.date)}</p>
+                      <p style={{ color: "white" }}>
+                        {formatDate(comment.date)}
+                      </p>
                     </div>
                     <div className="commentBody">
                       <p className="commentMsg">{comment.message}</p>
                       {user?.displayName === comment.author && (
                         <button
                           id="deleteButton"
-                          onClick={() => deleteComment()}
+                          onClick={() => deleteComment(comment.id as string)}
                         >
                           Delete
                         </button>
@@ -158,7 +160,7 @@ function Comments() {
               })
             ) : (
               <>
-                <p style={{ color: "white" }}>
+                <p style={{ color: "black" }}>
                   Be the first one to leave a comment!
                 </p>
                 <br />
