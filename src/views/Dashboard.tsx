@@ -29,8 +29,10 @@ function Dashboard() {
 
   return (
     <div className="dashboard" style={{ height: "60vh" }}>
-      <BackButton />
-      <h2 style={{ color: "black" }}>Welcome {user?.displayName}!</h2>
+      <div className="backHeader">
+        <BackButton />
+        <h2 style={{ color: "black" }}>Welcome {user?.displayName}!</h2>
+      </div>
 
       {/* <h2>TEST: {user.dsiplayName}</h2> */}
       <button value={"browse"} onClick={goBrowseDash} className="dashboardBtn">
@@ -47,8 +49,13 @@ function Dashboard() {
       <button onClick={goLogOutDash} className="dashboardBtn">
         Log out
       </button>
-
-      <button onClick={deleteAccount}> Delete your account </button>
+      <br />
+      <br />
+      <br />
+      <br />
+      <button className="resetButton" onClick={deleteAccount}>
+        Delete your account
+      </button>
     </div>
   );
 }
