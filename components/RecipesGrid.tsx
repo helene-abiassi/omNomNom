@@ -5,13 +5,8 @@ import SearchBox from "./SearchBox";
 import { RecipeType } from "../types/customTypes";
 import BackToTop from "./BackToTop";
 
-// const apiKey = "649ac07b69a74c6b9346b453f3d52d72";
-const apiKey = "782103823d1a4893a9bfca971f275b33";
 
 function RecipesGrid() {
-  // const {recipes, query, cuisine, diet,  fetchRecipes, setQuery,
-  // setCuisine, setDiet, changePageNumber} = useContext(RecipeContext)
-
   const [recipes, setRecipes] = useState<RecipeType[]>([
     {
       id: 0,
@@ -52,7 +47,7 @@ function RecipesGrid() {
   const [offset, setOffset] = useState<number>(0);
   const [query, setQuery] = useState<string>("");
   const [cuisine, setCuisine] = useState<string>("");
-  const [diet, setDiet] = useState<string>("");
+  const [diet, setDiet] = useState<[]>([]);
 
   const fetchRecipes = async () => {
     const url = `https://api.spoonacular.com/recipes/complexSearch?offset=${offset}&number=24&query=${query}&diet=${diet}&cuisine=${cuisine}&addRecipeInformation=true&fillIngredients=true&apiKey=${apiKey}`;
@@ -92,6 +87,8 @@ function RecipesGrid() {
         setQuery={setQuery}
         setCuisine={setCuisine}
         setDiet={setDiet}
+        query={query}
+        diet={diet}
       />
       <div className="RecipeContainer">
         {recipes ? (
@@ -105,12 +102,15 @@ function RecipesGrid() {
                   cuisine={cuisine}
                   diet={diet}
                   offset={offset}
+                  state={{ recipe: recipe }}
                 />
               </div>
             );
           })
         ) : (
-          <h1>....WHAT???...</h1>
+          <h2 style={{ color: "#FF5F1F", marginLeft: "28rem" }}>
+            ....OH NO!! Come back tomorrow ☹️...
+          </h2>
         )}
       </div>
       <BackToTop />
