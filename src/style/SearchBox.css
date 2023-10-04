@@ -25,8 +25,8 @@
   border: 1px solid #000;
   background: #d9d9d9;
   box-shadow: 1px 1px black;
-  text-align: center;
-  padding-left: 2%;
+  text-align: left;
+  padding-left: 5%;
   border-radius: 10px;
 }
 
@@ -38,6 +38,7 @@
   text-align: center;
   border-radius: 10px;
   box-shadow: 1px 1px #d9d9d9;
+  cursor: pointer;
 }
 
 .radioButtons {
@@ -50,14 +51,20 @@
   color: #000;
   margin-left: 3rem;
   margin-bottom: 1rem;
+  cursor: pointer;
 }
 
 .resetButton {
-  width: min-content;
+  /* width: min-content; */
   height: min-content;
   font-size: 15px;
   background-color: transparent;
   text-decoration: underline;
   color: #ff5f1f;
   border: transparent;
+  text-decoration: none;
+  cursor: pointer;
+}
+.resetButton:hover {
+  background-color: transparent !important;
 }
