@@ -1,19 +1,23 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
+import { GoogleAuthProvider } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+
 
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_APIKEY,
-  authDomain: import.meta.env.VITE_AUTHDOMAIN,
-  projectId: import.meta.env.VITE_PROJECTID,
-  storageBucket: import.meta.env.VITE_STORAGEBUCKET,
-  messagingSenderId: import.meta.env.VITE_MESSAGINGSENDERID,
-  appId: import.meta.env. VITE_APPID,
+  apiKey:"AIzaSyDy9ysE0IXSoMk7WE2qT44Nr3TKBu2vA2U",
+  authDomain: "nnomnom-hln.firebaseapp.com",
+  projectId: "onnomnom-hln",
+  storageBucket: "onnomnom-hln.appspot.com",
+  messagingSenderId: "211611816598",
+  appId: "1:211611816598:web:acaf1d519f147640f128b7",
 };
 
-console.log('object :>> ', import.meta.env.VITE_APIKEY);
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+export const provider = new GoogleAuthProvider();
+export const db = getFirestore(app);
+
