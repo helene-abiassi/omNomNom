@@ -1,14 +1,13 @@
 import { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
 function NavBar() {
   const { user } = useContext(AuthContext);
-  console.log("USER", user);
 
   return (
     <>
-      <div className="navBar">
+      <div>
         <nav>
           <div className="navLeft">
             <NavLink to="/">
@@ -22,7 +21,16 @@ function NavBar() {
 
           <div className="loginNavBar">
             {user ? (
-              <NavLink to="dashboard"> HALLO {user?.displayName}</NavLink>
+              <NavLink
+                to="dashboard"
+                style={({ isActive }) => ({
+                  opacity: isActive ? 0 : 1,
+                  cursor: isActive ? "inherit" : "pointer",
+                })}
+              >
+                {" "}
+                Hey {user?.displayName}!
+              </NavLink>
             ) : (
               <div>
                 <NavLink to="login"> Log In </NavLink>
@@ -33,7 +41,9 @@ function NavBar() {
         </nav>
 
         <header>
-          <img className="mainLogo" src="./public/logo.png" alt="" />
+          <Link to={"/"}>
+            <img className="mainLogo" src="./public/logo.png" alt="" />
+          </Link>
         </header>
       </div>
     </>
