@@ -1,34 +1,30 @@
-// import React from 'react'
-
-import { useContext } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import AuthContext from "../context/AuthContext";
 
-function FavoriteButton() {
+function FavoriteButton({ onClick }) {
   const { user } = useContext(AuthContext);
-  // const navigateTo = useNavigate();
+  const [isBlack, setIsBlack] = useState(false);
 
-  const saveToFavorites = () => {
-    console.log("Saved!");
+  const toggleFavoriteClick = () => {
+    if (user) {
+      setIsBlack((prev) => !prev);
+      onClick();
+    } else {
+      alert("You need to log in to be able to save recipes!");
+    }
   };
 
-  const redirectLogIn = () => {
-    // navigateTo("/login");
-    alert("You need to log in to be able to save recipes!");
-  };
-
-  const handleFavoriteCLick = () => {
-    user ? saveToFavorites() : redirectLogIn();
-  };
   return (
     <div>
-      {/* <input type="checkbox" value="favIcon"> */}
-      {/* <label htmlFor="favIcon"> */}
-      <button onClick={handleFavoriteCLick} className="favIcon">
+      <button
+        style={{ color: isBlack ? "black" : "white" }}
+        onClick={toggleFavoriteClick}
+        className="favIcon"
+        isBlack={isBlack}
+        setIsBlack={setIsBlack}
+      >
         ❤
       </button>
-      {/* </label> */}
-      {/* </input> */}
     </div>
   );
 }
