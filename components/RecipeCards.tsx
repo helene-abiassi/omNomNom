@@ -1,37 +1,48 @@
-// import { Link } from 'react-router-dom';
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { RecipeCardProp } from "../types/customTypes";
-import BackButton from "./BackButton";
-import AuthContext from "../context/AuthContext";
+import FavoriteButton from "./FavoriteButton";
 import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../config/firebaseConfig";
+import { FavoriteRecipeType } from "../../views/MyRecipes";
 
 function RecipeCards({ recipe }: RecipeCardProp) {
   const { id, image, title, readyInMinutes, servings } = recipe;
   const { user } = useContext(AuthContext);
-  const navigateTo = useNavigate();
 
-  // console.log('recipe.title :>> ', recipe.title);
+  const handleFavoriteClick = async () => {
+    console.log("CLICKED :>> ");
+    const newFavedRecipe: FavoriteRecipeType = {
+      id: recipe.id,
+      image: recipe.image,
+      readyInMinutes: recipe.readyInMinutes,
+      servings: recipe.servings,
+      title: recipe.title,
+      url: `browse/${recipe.id}`,
+    };
 
-  const saveToFavorites = () => {
-    console.log("Saved!");
+    try {
+      if (user) {
+        const userDocRef = doc(db, "favoriteRecipesCollection", `${user.uid}`);
+        const recipeDocRef = doc(userDocRef, "recipes", `${recipe.id}`);
+        await setDoc(recipeDocRef, newFavedRecipe);
+
+        console.log("Recipe added to favorites!");
+      } else {
+        console.error("User not authenticated.");
+      }
+    } catch (error) {
+      console.error("Error adding recipe to favorites:", error);
+    }
   };
 
-  const redirectLogIn = () => {
-    navigateTo("/login");
-    alert("You need to be logged to be able to save recipes!");
-  };
-
-  const handleFavoriteCLick = () => {
-    user ? saveToFavorites() : redirectLogIn();
-  };
   return (
     <>
       <div className="RecipeCard" key={recipe.id}>
-        <button onClick={handleFavoriteCLick} className="favIcon">
-          ❤ 0
-        </button>
+        <FavoriteButton onClick={handleFavoriteClick} recipe={recipe} />
         <img className="RecipeImage" src={image} alt={title} key={id} />
-        <h3>{title}</h3>
+        <h4>{title}</h4>
         <p style={{ textAlign: "left", marginLeft: "2rem" }}>
           Ready in {readyInMinutes} mns. Serves {servings} humans
         </p>
@@ -40,7 +51,7 @@ function RecipeCards({ recipe }: RecipeCardProp) {
           to={`${recipe.id}`}
           state={{ recipe: recipe }}
         >
-          <h4>View More</h4>
+          View More
         </Link>
       </div>
     </>
