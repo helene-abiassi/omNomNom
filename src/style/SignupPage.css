@@ -24,3 +24,14 @@ p {
 label {
   color: black;
 }
+
+.hide-password {
+  position: relative;
+  top: -30px;
+  left: 155px;
+  color: #242424;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+}
