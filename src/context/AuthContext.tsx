@@ -10,7 +10,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { User } from "../types/customTypes";
-import { auth } from "../config/firebaseConfig";
+import { auth, provider } from "../config/firebaseConfig";
 
 export interface AuthContextType {
   user: User | null;
@@ -19,7 +19,7 @@ export interface AuthContextType {
   setUser: (user: User) => void;
   logOut: () => void;
   signUp: (displayName: string, email: string, password: string) => void;
-  logIn: (displayName: string, email: string, password: string) => void;
+  logIn: (email: string, password: string) => void;
   deleteMyUser: () => void;
   googleLogIn: () => void;
 }
@@ -51,17 +51,15 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     email: string,
     password: string
   ) => {
-    // console.log("object :>> ", email, password);
-
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
+      setLoader(true);
       const registeredUser = userCredential.user;
       console.log("user success :>> ", registeredUser);
-      // alert("YEY!");
       await updateProfile(registeredUser, { displayName: displayName });
     } catch (error) {
       const errorCode = "";
@@ -69,7 +67,10 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       console.log("registration failed :>> ", error);
       alert("OH NEIN!" + errorMessage);
     }
+    setLoader(false);
   };
+
+  // const redirectTo = useNavigate();
 
   const logIn = async (email: string, password: string) => {
     try {
@@ -81,50 +82,24 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       const loggedUser = userCredential.user;
       // console.log("user success :>> ", loggedUser);
       setUser(loggedUser);
-      // setLoader(false);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log("error oh nein! :>> ", errorMessage);
-      alert("OH NEIN!" + errorMessage);
+      // alert("OH NEIN!" + errorMessage);
     }
   };
 
-  const provider = new GoogleAuthProvider();
-
-  const googleLogIn = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log("credential :>> ", credential);
-      });
-  };
-
   const deleteMyUser = () => {
-    const user = auth.currentUser;
-    deleteUser(user)
-      .then(() => {
-        // User deleted.
-      })
-      .catch((error) => {
-        // An error ocurred
-        // ...
-      });
+    if (window.confirm("Are you SURE you want to delete your account?")) {
+      deleteUser(user)
+        .then(() => {
+          console.log("User deleted");
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }
   };
 
   const isUserActive = () => {
@@ -146,12 +121,37 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   }, []);
 
   const logOut = () => {
-    signOut(auth)
-      .then(() => {
-        setUser(null);
+    if (window.confirm("Are you SURE you want to log out?")) {
+      signOut(auth)
+        .then(() => {
+          setUser(null);
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }
+  };
+
+  const googleLogIn = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
       })
       .catch((error) => {
-        alert(error);
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("errorMessage :>> ", errorMessage);
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log("credential :>> ", credential);
       });
   };
 
@@ -163,9 +163,9 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         signUp,
         logIn,
         logOut,
-        googleLogIn,
         loader,
         deleteMyUser,
+        googleLogIn,
       }}
     >
       {children}
