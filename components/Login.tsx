@@ -1,40 +1,66 @@
 import { ChangeEvent, FormEvent, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
 function LogIn() {
-  console.log("%c login", "color:green");
-
   const { logIn, googleLogIn } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordType, setPasswordType] = useState("password");
+  const [showOrHide, setShowOrHide] = useState("show");
+
   const redirectTo = useNavigate();
 
+  const changePasswordType = () => {
+    if (passwordType === "password") {
+      setPasswordType("text");
+      setShowOrHide("hide");
+      return;
+    }
+    setPasswordType("password");
+    setShowOrHide("show");
+  };
+
   const handleEmailEntry = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
+    const emailInput = e.target.value;
+    setEmail(emailInput);
   };
 
   const handlePswEntry = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+    const pswInput = e.target.value;
+    setPassword(pswInput);
   };
 
   const handleLogIn = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    logIn(email, password);
-    redirectTo("/dashboard");
+    if (!email.includes("@") && password.length < 6) {
+      alert(
+        "Your email seems to be invalid. \n Your password should be at least 6 characters"
+      );
+      redirectTo("/login");
+    } else if (password.length < 6) {
+      alert("Your password should be at least 6 characters");
+      redirectTo("/login");
+    } else if (!email.includes("@")) {
+      alert("Your email seems to be invalid");
+      redirectTo("/login");
+    } else {
+      logIn(email, password);
+      redirectTo("/dashboard");
+    }
   };
 
-  const handleGoogleLogIn = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    googleLogIn();
-  };
+  // const handleGoogleLogIn = (e: ChangeEvent<HTMLInputElement>) => {
+  //   e.preventDefault();
+  //   googleLogIn();
+  // };
 
   return (
     <div>
       <br />
       <div className="container">
-        <form onSubmit={handleLogIn} className="signUpForm" action={"/"}>
+        <form onSubmit={handleLogIn} className="signUpForm">
           <p>Fill in the information below to log in:</p>
 
           <label htmlFor="email">Email:</label>
@@ -42,6 +68,7 @@ function LogIn() {
             onChange={handleEmailEntry}
             className="searchInputBox"
             type="text"
+            id="email"
             placeholder="Enter e-mail..."
             name="email"
             autoComplete="current-email"
@@ -52,18 +79,23 @@ function LogIn() {
           <input
             onChange={handlePswEntry}
             className="searchInputBox"
-            type="password"
+            type={passwordType}
+            id="password"
             placeholder="Enter password..."
             name="psw"
             autoComplete="current-password"
           />
+          <span
+            onClick={changePasswordType}
+            className="hide-password"
+            style={{ cursor: "pointer" }}
+          >
+            {showOrHide}
+          </span>
 
-          <br />
-          <button onClick={handleGoogleLogIn}>
+          {/* <button className="resetButton" onClick={handleGoogleLogIn}>
             Log in with your Google account
-          </button>
-          <br />
-          <br />
+          </button> */}
           <button type="submit" className="signupbtn">
             Login
           </button>
@@ -72,11 +104,13 @@ function LogIn() {
         <img className="loginImg" src="./public/DONUT-copy.png" alt="" />
       </div>
       <br />
-      <p>
-        Don't have an account yet? <a href="signup">Sign up!</a>
-      </p>
 
-      <br />
+      <p>
+        Don't have an account yet?{" "}
+        <Link to={"/signup"} className="resetButton" replace={true}>
+          Sign up!
+        </Link>
+      </p>
     </div>
   );
 }
