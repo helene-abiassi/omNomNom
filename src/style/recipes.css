@@ -1,6 +1,7 @@
 #scrollToTop {
   background-color: #ff5f1f;
   color: black;
+  cursor: pointer;
 }
 
 #scrollDiv {
