@@ -47,10 +47,9 @@ function Comments() {
       const formattedDate = new Date(date.seconds * 1000).toLocaleString();
       return formattedDate;
     } else {
-      const formattedDate = new Date(date.seconds * 1000).toLocaleString();
+      const formattedDate = new Date(date.getSeconds() * 1000).toLocaleString();
       return formattedDate;
     }
-    // console.log("formattedDate :>> ", formattedDate);
   };
 
   const handleNewComments = (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,25 +70,19 @@ function Comments() {
   };
 
   const getRealTimeComments = () => {
-    // const q = query(collection(db, "comments"), orderBy("date", "desc"));
     const q = query(collection(db, `${recipeId}`), orderBy("date", "desc"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    onSnapshot(q, (querySnapshot) => {
       const commentsArray: CommentsType[] = [];
       querySnapshot.forEach((doc) => {
-        console.log("doc :>> ", doc.id);
+        // console.log("doc :>> ", doc.id);
         const message = { ...doc.data(), id: doc.id } as CommentsType;
-        // be careful with the use of type assertion (ok, this time was me...)
-        console.log("my new message :>> ", message);
         commentsArray.push(message);
       });
       setComments(commentsArray);
-      // console.log("commentsArray :>> ", commentsArray);
     });
   };
 
   const deleteComment = async (commentId: string) => {
-    const commentsArray: CommentsType[] = [];
-    console.log("commentId :>> ", commentId);
     try {
       if (window.confirm("Are you SURE you want to delete your comment?")) {
         const deletedMessage = await deleteDoc(
