@@ -4,11 +4,13 @@ import {
   doc,
   onSnapshot,
   deleteDoc,
-  getDocs,
   collection,
+  QuerySnapshot,
+  DocumentData,
+  QueryDocumentSnapshot,
 } from "firebase/firestore";
 import { db } from "../src/config/firebaseConfig";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export interface FavoriteRecipeType {
   id: number;
@@ -24,22 +26,19 @@ function MyRecipes() {
   const [favoritesArray, setFavoritesArray] = useState<
     FavoriteRecipeType[] | null
   >(null);
-  const navigateTo = (url) => {
-    useNavigate(url);
-  };
 
-  const getFavorites = async () => {
-    const querySnapshot = await getDocs(
-      collection(db, "favoriteRecipesCollection", `${user?.uid}`, "recipes")
-    );
-    const favArray: FavoriteRecipeType[] = [];
+  // const getFavorites = async () => {
+  //   const querySnapshot = await getDocs(
+  //     collection(db, "favoriteRecipesCollection", `${user?.uid}`, "recipes")
+  //   );
+  //   const favArray: FavoriteRecipeType[] = [];
 
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-      favArray.push(doc.data() as FavoriteRecipeType);
-    });
-    setFavoritesArray(favArray);
-  };
+  //   querySnapshot.forEach((doc) => {
+  //     console.log(doc.id, " => ", doc.data());
+  //     favArray.push(doc.data() as FavoriteRecipeType);
+  //   });
+  //   setFavoritesArray(favArray);
+  // };
 
   const getRealTimeFavorites = () => {
     if (user) {
@@ -50,18 +49,21 @@ function MyRecipes() {
         "recipes"
       );
 
-      const unsubscribe = onSnapshot(favRef, (querySnapshot) => {
-        const favArray: FavoriteRecipeType[] = [];
+      const unsubscribe = onSnapshot(
+        favRef,
+        (querySnapshot: QuerySnapshot<DocumentData>) => {
+          const favArray: FavoriteRecipeType[] = [];
 
-        querySnapshot.forEach((doc) => {
-          favArray.push({
-            id: doc.id,
-            ...doc.data(),
-          } as FavoriteRecipeType);
-        });
+          querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
+            favArray.push({
+              id: doc.id,
+              ...(doc.data() as FavoriteRecipeType),
+            });
+          });
 
-        setFavoritesArray(favArray);
-      });
+          setFavoritesArray(favArray);
+        }
+      );
 
       return () => {
         unsubscribe();
@@ -69,7 +71,7 @@ function MyRecipes() {
     }
   };
 
-  const handleDeleteClick = async (id) => {
+  const handleDeleteClick = async (id: number) => {
     try {
       if (user) {
         const docRef = doc(
@@ -97,7 +99,7 @@ function MyRecipes() {
     const unsubscribe = getRealTimeFavorites();
 
     return () => {
-      unsubscribe();
+      unsubscribe!();
     };
   }, [user]);
 
@@ -117,7 +119,6 @@ function MyRecipes() {
                 style={{ height: "max-content", width: "max-content" }}
               >
                 <button
-                  // style={{ color: isBlack ? "black" : "white" }}
                   onClick={() => handleDeleteClick(favorite.id)}
                   className="favIcon deleteIcon"
                   key={favorite.id}
