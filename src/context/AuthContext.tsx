@@ -10,7 +10,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { User } from "../types/customTypes";
-import { auth, provider } from "../config/firebaseConfig";
+import { auth } from "../config/firebaseConfig";
 
 export interface AuthContextType {
   user: User | null;
@@ -64,13 +64,11 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     } catch (error) {
       const errorCode = "";
       const errorMessage = "";
-      console.log("registration failed :>> ", error);
+      console.log("registration failed :>> ", errorCode);
       alert("OH NEIN!" + errorMessage);
     }
     setLoader(false);
   };
-
-  // const redirectTo = useNavigate();
 
   const logIn = async (email: string, password: string) => {
     try {
@@ -80,13 +78,9 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         password
       );
       const loggedUser = userCredential.user;
-      // console.log("user success :>> ", loggedUser);
       setUser(loggedUser);
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log("error oh nein! :>> ", errorMessage);
-      // alert("OH NEIN!" + errorMessage);
+      console.log("error :>> ", error);
     }
   };
 
@@ -132,29 +126,6 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     }
   };
 
-  const googleLogIn = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("errorMessage :>> ", errorMessage);
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log("credential :>> ", credential);
-      });
-  };
-
   return (
     <AuthContext.Provider
       value={{
@@ -165,7 +136,6 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         logOut,
         loader,
         deleteMyUser,
-        googleLogIn,
       }}
     >
       {children}
