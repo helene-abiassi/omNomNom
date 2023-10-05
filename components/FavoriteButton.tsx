@@ -1,7 +1,13 @@
 import { useContext, useState } from "react";
 import AuthContext from "../context/AuthContext";
 
-function FavoriteButton({ onClick }) {
+export interface FavoriteButtonProps {
+  isBlack: boolean;
+  onClick: () => void;
+  setIsBlack: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function FavoriteButton({ onClick }: FavoriteButtonProps) {
   const { user } = useContext(AuthContext);
   const [isBlack, setIsBlack] = useState(false);
 
