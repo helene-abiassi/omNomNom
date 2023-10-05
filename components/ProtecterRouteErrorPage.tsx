@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function ProtecterRouteErrorPage() {
   const [redirect, setRedirect] = useState(false);
@@ -8,6 +8,8 @@ function ProtecterRouteErrorPage() {
       setRedirect(true);
     }, 4000);
   }, []);
+
+  console.log("redirect :>> ", redirect);
 
   return (
     <div style={{ height: "60vh" }}>
