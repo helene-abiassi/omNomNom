@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../src/context/AuthContext";
 import { Link } from "react-router-dom";
-import Comments from "../src/components/Comments";
 
 function Home() {
   const { user } = useContext(AuthContext);
@@ -11,7 +10,6 @@ function Home() {
       <div style={{ height: "100%" }}>
         <h3 style={{ color: "black" }}>Hey {user?.displayName}🍕!</h3>
         <img className="homePageImg" src="./public/pasta.webp" alt="" />
-        {/* display dofferent msg for logged in/out */}
         <br />
         <br />
         <p style={{ alignContent: "center" }}>
@@ -24,7 +22,6 @@ function Home() {
               backgroundColor: "#FE347E",
               padding: "8px",
               borderRadius: "3px",
-              // color: "black",
             }}
             href="/browse"
           >
@@ -49,7 +46,6 @@ function Home() {
         )}
       </div>
       <br />
-      {/* <Comments /> */}
     </>
   );
 }
