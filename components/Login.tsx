@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
 function LogIn() {
-  const { logIn, googleLogIn } = useContext(AuthContext);
+  const { logIn } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -51,11 +51,6 @@ function LogIn() {
     }
   };
 
-  // const handleGoogleLogIn = (e: ChangeEvent<HTMLInputElement>) => {
-  //   e.preventDefault();
-  //   googleLogIn();
-  // };
-
   return (
     <div>
       <br />
@@ -93,9 +88,6 @@ function LogIn() {
             {showOrHide}
           </span>
 
-          {/* <button className="resetButton" onClick={handleGoogleLogIn}>
-            Log in with your Google account
-          </button> */}
           <button type="submit" className="signupbtn">
             Login
           </button>
