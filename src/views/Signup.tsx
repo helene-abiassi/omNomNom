@@ -1,4 +1,3 @@
-// import React from 'react'
 import SignUp from "../src/components/SignUp";
 import "../src/style/SignupPage.css";
 
