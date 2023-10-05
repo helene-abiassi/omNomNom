@@ -5,7 +5,15 @@ import { useContext } from "react";
 import AuthContext from "../context/AuthContext";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
-import { FavoriteRecipeType } from "../../views/MyRecipes";
+
+export interface FavoriteRecipeType {
+  id: number;
+  image: string;
+  readyInMinutes: number;
+  servings: number;
+  title: string;
+  url: string;
+}
 
 function RecipeCards({ recipe }: RecipeCardProp) {
   const { id, image, title, readyInMinutes, servings } = recipe;
