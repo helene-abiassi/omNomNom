@@ -16,20 +16,18 @@ import Dashboard from "../views/Dashboard";
 import ErrorPage from "../views/ErrorPage";
 import { RecipeContextProvider } from "./context/RecipeContext";
 import { AuthContextProvider } from "./context/AuthContext";
-import { app, db } from "./config/firebaseConfig";
+import { db } from "./config/firebaseConfig";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  // console.log("app :>> ", app);
   console.log("db :>> ", db);
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Root />} errorElement={<ErrorPage />}>
         <Route index element={<Home />} />
         <Route path="browse" element={<BrowseRecipes />} />
-
         <Route
           path="browse/:recipeId"
           element={
@@ -38,7 +36,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="my-recipes"
           element={
@@ -47,11 +44,16 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        <Route path="dashboard" element={<Dashboard />} />
-
+        <Route
+          path="dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route path="signup" element={<Signup />} />
-        <Route path="login" element={<Login />} />
+        <Route path="login" element={<Login />} /> //!
       </Route>
     )
   );
