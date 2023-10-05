@@ -7,12 +7,12 @@ import { useContext, useEffect } from "react";
 import AuthContext from "../src/context/AuthContext";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../src/config/firebaseConfig";
+import { FavoriteRecipeType } from "./MyRecipes";
 
 function RecipeDetails() {
   const location = useLocation();
   const { recipe } = location.state;
 
-  // const { id, image, title, readyInMinutes, servings } = recipe;
   const { user } = useContext(AuthContext);
 
   const handleFavoriteClick = async () => {
@@ -35,7 +35,6 @@ function RecipeDetails() {
         console.log("Recipe added to favorites!");
       } else {
         console.error("User not authenticated.");
-        // You might want to handle the case where the user is not authenticated.
       }
     } catch (error) {
       console.error("Error adding recipe to favorites:", error);
