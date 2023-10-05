@@ -58,7 +58,7 @@ function SignUp() {
   };
 
   useEffect(() => {
-    setDisplayName(displayName);
+    setDisplayName(displayName); //! QUE PASA AQUI
     setEmail(email);
     setPassword(password);
   }, []);
