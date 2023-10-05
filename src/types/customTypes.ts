@@ -35,8 +35,8 @@ export interface RecipeType {
 
 
 export interface RecipeCardProp {
-    recipe: RecipeType;
-    search:searchProps;
+    recipe: RecipeType[];
+    search:searchProps[];
   }
 
 
@@ -44,6 +44,7 @@ export interface RecipeCardProp {
     query: string,
     cuisine: string,
     diet: string,
+    prevDiet:string,
   }
 
   export interface searchFunctions {
