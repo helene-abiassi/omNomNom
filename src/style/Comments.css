@@ -64,10 +64,9 @@
   color: white !important;
 }
 
-/* .singleCommentHeader button {
-  justify-self: flex-end;
-} */
-
+input {
+  color: black;
+}
 .commentBody {
   display: flex;
   flex-direction: row wrap;
