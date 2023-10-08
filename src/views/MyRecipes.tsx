@@ -27,19 +27,6 @@ function MyRecipes() {
     FavoriteRecipeType[] | null
   >(null);
 
-  // const getFavorites = async () => {
-  //   const querySnapshot = await getDocs(
-  //     collection(db, "favoriteRecipesCollection", `${user?.uid}`, "recipes")
-  //   );
-  //   const favArray: FavoriteRecipeType[] = [];
-
-  //   querySnapshot.forEach((doc) => {
-  //     console.log(doc.id, " => ", doc.data());
-  //     favArray.push(doc.data() as FavoriteRecipeType);
-  //   });
-  //   setFavoritesArray(favArray);
-  // };
-
   const getRealTimeFavorites = () => {
     if (user) {
       const favRef = collection(
