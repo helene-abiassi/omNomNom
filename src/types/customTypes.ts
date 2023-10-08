@@ -35,22 +35,24 @@ export interface RecipeType {
 
 
 export interface RecipeCardProp {
-    recipe: RecipeType[];
+    recipe: RecipeType | RecipeType[];
     search:searchProps[];
   }
 
 
   export interface searchProps {
-    query: string,
-    cuisine: string,
-    diet: string,
-    prevDiet:string,
+    query: string | string[],
+    cuisine: string | string[],
+    diet: string | string[],
+    prevDiet:string | string[],
+    selectedDiet:string | string[],
+
   }
 
   export interface searchFunctions {
     setQuery:(query:string)=> void
   setCuisine:(cuisine:string) => void,
-  setDiet:(diet:string[]) => void,
+  setDiet:(diet:string[]) => void 
   diet: string,
   query: string,
   
@@ -68,6 +70,6 @@ export interface RecipeCardProp {
 export interface User {
   displayName:string ,
   email:string,
-  password:string,
+  password?:string,
   uid:number,
 }
