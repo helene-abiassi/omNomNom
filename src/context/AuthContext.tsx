@@ -1,11 +1,9 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 import {
-  GoogleAuthProvider,
   createUserWithEmailAndPassword,
   deleteUser,
   onAuthStateChanged,
   signInWithEmailAndPassword,
-  signInWithPopup,
   signOut,
   updateProfile,
 } from "firebase/auth";
@@ -16,7 +14,7 @@ export interface AuthContextType {
   user: User | null;
   loggedUser: User | null;
   loader: boolean;
-  setUser: (user: User) => void;
+  setUser: (user: User | null) => void;
   logOut: () => void;
   signUp: (displayName: string, email: string, password: string) => void;
   logIn: (email: string, password: string) => void;
