@@ -14,7 +14,6 @@ import Login from "../views/Login";
 import Signup from "../views/Signup";
 import Dashboard from "../views/Dashboard";
 import ErrorPage from "../views/ErrorPage";
-import { RecipeContextProvider } from "./context/RecipeContext";
 import { AuthContextProvider } from "./context/AuthContext";
 import { db } from "./config/firebaseConfig";
 import NavBar from "./components/NavBar";
@@ -61,10 +60,8 @@ function App() {
   return (
     <>
       <AuthContextProvider>
-        <RecipeContextProvider>
-          <RouterProvider router={router} />
-          <Footer />
-        </RecipeContextProvider>
+        <RouterProvider router={router} />
+        <Footer />
       </AuthContextProvider>
     </>
   );
