@@ -43,7 +43,6 @@ function MyRecipes() {
 
           querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
             favArray.push({
-              id: doc.id,
               ...(doc.data() as FavoriteRecipeType),
             });
           });
