@@ -57,7 +57,7 @@ function SearchBox({
     setQuery(normalizedQuery);
   };
 
-  const handleCuisineInput = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleCuisineInput = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedValue: string = e.target.value;
     setCuisine(selectedValue);
     setSelectedCuisine(selectedValue);
@@ -70,14 +70,16 @@ function SearchBox({
       .map((item: string) => item.trim());
 
     console.log("diet :>> ", diet);
-
-    setDiet((prevDiet: string[]) => {
+    const calculatePrevDiet = (prevDiet: string[]) => {
       if (prevDiet.includes(selectedDiet)) {
         return prevDiet.filter((item: string) => item !== selectedDiet);
       } else {
         return [...prevDiet, ...updatedDiet];
       }
-    });
+    };
+    const prevDiet = calculatePrevDiet(updatedDiet);
+    //REVIEW - check in console.log if it is really adding and removing diet from string after every click.
+    setDiet(prevDiet);
   };
 
   const resetFilters = () => {
@@ -133,11 +135,17 @@ function SearchBox({
             Reset
           </button>
         </div>
-        <form className="radioButtons" onChange={handleDietInput}>
+        <form className="radioButtons">
           {dietsArray.map((diet, idd) => {
             return (
               <div key={idd}>
-                <input type="checkbox" id={idd} value={diet} key={idd} />
+                <input
+                  type="checkbox"
+                  id={idd}
+                  value={diet}
+                  key={idd}
+                  onChange={handleDietInput}
+                />
                 <label key={"1" + idd} htmlFor={diet}>
                   {" "}
                   {diet}
