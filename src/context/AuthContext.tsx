@@ -1,5 +1,6 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 import {
+  User,
   createUserWithEmailAndPassword,
   deleteUser,
   onAuthStateChanged,
@@ -7,19 +8,17 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { User } from "../types/customTypes";
+// import { User } from "../types/customTypes";
 import { auth } from "../config/firebaseConfig";
 
 export interface AuthContextType {
   user: User | null;
-  loggedUser: User | null;
   loader: boolean;
   setUser: (user: User | null) => void;
   logOut: () => void;
   signUp: (displayName: string, email: string, password: string) => void;
   logIn: (email: string, password: string) => void;
   deleteMyUser: () => void;
-  googleLogIn: () => void;
 }
 
 export interface AuthContextProviderProps {
@@ -28,14 +27,12 @@ export interface AuthContextProviderProps {
 
 export const AuthInitContext = {
   user: null,
-  loggedUser: null,
   loader: true,
   setUser: () => console.log("not initialized"),
   logOut: () => console.log("not initialized"),
   signUp: () => console.log("not initialized"),
   logIn: () => console.log("not initialized"),
   deleteMyUser: () => console.log("not initialized"),
-  googleLogIn: () => console.log("not initialized"),
 };
 
 export const AuthContext = createContext<AuthContextType>(AuthInitContext);
@@ -84,7 +81,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   const deleteMyUser = () => {
     if (window.confirm("Are you SURE you want to delete your account?")) {
-      deleteUser(user)
+      deleteUser(user!)
         .then(() => {
           console.log("User deleted");
         })
