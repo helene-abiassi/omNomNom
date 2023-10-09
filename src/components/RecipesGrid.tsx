@@ -49,7 +49,7 @@ function RecipesGrid() {
   const [offset, setOffset] = useState<number>(0);
   const [query, setQuery] = useState<string>("");
   const [cuisine, setCuisine] = useState<string>("");
-  const [diet, setDiet] = useState<[]>([]);
+  const [diet, setDiet] = useState<string[]>([""]);
   const [apiKey, setApiKey] = useState("649ac07b69a74c6b9346b453f3d52d72");
 
   const fetchRecipes = async () => {
@@ -124,15 +124,7 @@ function RecipesGrid() {
           recipes.map((recipe, idRec) => {
             return (
               <div key={idRec}>
-                <RecipeCards
-                  key={"1" + recipe.id}
-                  recipe={recipe}
-                  query={query}
-                  cuisine={cuisine}
-                  diet={diet}
-                  offset={offset}
-                  state={{ recipe: recipe }}
-                />
+                <RecipeCards key={"1" + recipe.id} recipe={recipe} />
               </div>
             );
           })
