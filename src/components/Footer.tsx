@@ -1,14 +1,14 @@
-function Loader() {
+function Footer() {
   return (
-    <div>
-      <br />
-      <h3 style={{ color: "#FF5F1F" }}>LOADING....</h3>
-
-      <img className="loader" src="./public/loader.png" alt="" />
-      <br />
-      <br />
+    <div className="footerBox">
+      <img className="mainLogo footerImg" src="./public/logo.png" alt="" />
+      <span className="footerText">
+        © Helene Abi Assi, 2023{" "}
+        <a href="https://spoonacular.com/">Spoonacular API</a>
+      </span>
+      <img className="mainLogo footerImg" src="./public/logo.png" alt="" />
     </div>
   );
 }
 
-export default Loader;
+export default Footer;
