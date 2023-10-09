@@ -12,7 +12,16 @@ import { RecipeType } from "../src/types/customTypes";
 
 function RecipeDetails() {
   const location = useLocation();
-  const { recipe } = location.state as RecipeType;
+  //REVIEW destructure the name of the properties you are getting from location.state
+  const {
+    extendedIngredients,
+    id,
+    title,
+    image,
+    analyzedInstructions,
+    readyInMinutes,
+    servings,
+  } = location.state as RecipeType;
 
   const { user } = useContext(AuthContext);
   const [isBlack, setIsBlack] = useState(false);
@@ -29,17 +38,17 @@ function RecipeDetails() {
 
   const handleFavoriteClick = async () => {
     const newFavedRecipe: FavoriteRecipeType = {
-      id: recipe.id,
-      image: recipe.image,
-      readyInMinutes: recipe.readyInMinutes,
-      servings: recipe.servings,
-      title: recipe.title,
-      url: `browse/${recipe.id}`,
+      id: id,
+      image: image,
+      readyInMinutes: readyInMinutes,
+      servings: servings,
+      title: title,
+      url: `browse/${id}`,
     };
     try {
       if (user) {
         const userDocRef = doc(db, "favoriteRecipesCollection", `${user.uid}`);
-        const recipeDocRef = doc(userDocRef, "recipes", `${recipe.id}`);
+        const recipeDocRef = doc(userDocRef, "recipes", `${id}`);
         const docSnap = await getDoc(recipeDocRef);
 
         if (docSnap.exists()) {
@@ -63,7 +72,7 @@ function RecipeDetails() {
     try {
       if (user) {
         const userDocRef = doc(db, "favoriteRecipesCollection", `${user.uid}`);
-        const recipeDocRef = doc(userDocRef, "recipes", `${recipe.id}`);
+        const recipeDocRef = doc(userDocRef, "recipes", `${id}`);
         const docSnap = await getDoc(recipeDocRef);
         if (docSnap.exists()) {
           setIsBlack(true);
@@ -77,7 +86,7 @@ function RecipeDetails() {
   useEffect(() => {
     window.scrollTo(0, 0);
     checkFavoriteStatus();
-  }, [user, recipe.id]);
+  }, [user, id]);
 
   return (
     <div style={{ color: "black" }}>
@@ -85,10 +94,10 @@ function RecipeDetails() {
 
       <div className="backHeader">
         <BackButton />
-        <h2 style={{ textAlign: "center" }}>{recipe.title}</h2>
+        <h2 style={{ textAlign: "center" }}>{title}</h2>
       </div>
 
-      <img className="recipePageImg" src={recipe.image} alt={recipe.name} />
+      <img className="recipePageImg" src={image} alt={title} />
       <div className="recipeCard">
         <div>
           <div className="recipePageHeader">
@@ -97,14 +106,13 @@ function RecipeDetails() {
 
             <FavoriteButton
               onClick={handleFavoriteClick}
-              recipe={recipe}
               isBlack={isBlack}
               setIsBlack={setIsBlack}
             />
           </div>
 
           <ul>
-            {recipe.extendedIngredients.map((ingredient, ingInd: number) => {
+            {extendedIngredients.map((ingredient, ingInd: number) => {
               return (
                 <div key={ingInd}>
                   <li key={ingInd}>
@@ -117,19 +125,17 @@ function RecipeDetails() {
           </ul>
           <h3>Instructions: </h3>
           <ul>
-            {recipe.analyzedInstructions[0].steps.map(
-              (step, stepInd: number) => {
-                return (
-                  <>
-                    <li key={stepInd} style={{ width: "80%" }}>
-                      <strong>Step {step.number}:</strong> <br />
-                      {step.step}
-                    </li>
-                    {/* <br /> */}
-                  </>
-                );
-              }
-            )}
+            {analyzedInstructions[0].steps.map((step, stepInd: number) => {
+              return (
+                <>
+                  <li key={stepInd} style={{ width: "80%" }}>
+                    <strong>Step {step.number}:</strong> <br />
+                    {step.steps}
+                  </li>
+                  {/* <br /> */}
+                </>
+              );
+            })}
           </ul>
         </div>
       </div>
