@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { RecipeCardProp, RecipeType } from "../types/customTypes";
+import { RecipeType } from "../types/customTypes";
 import "../style/toast.css";
 import FavoriteButton from "./FavoriteButton";
 import { useContext, useEffect, useState } from "react";
@@ -16,6 +16,9 @@ export interface FavoriteRecipeType {
   url: string;
 }
 
+export interface RecipeCardProp {
+  recipe: RecipeType | RecipeType[];
+}
 function RecipeCards({ recipe }: RecipeCardProp) {
   const { id, image, title, readyInMinutes, servings } = recipe as RecipeType;
   const { user } = useContext(AuthContext);
