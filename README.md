@@ -1,4 +1,4 @@
-<img src="https://res.cloudinary.com/dfm1r4ikr/image/upload/v1706451659/logo-sm_vh1yig.png" alt="omnomnom-logo" />
+<img src="https://res.cloudinary.com/dfm1r4ikr/image/upload/c_thumb,w_200,g_face/v1706451659/logo-sm_vh1yig.png" alt="omnomnom-logo" />
 <h2>omNomNom - a recipe Single-Page Application,</br>built with React, Firebase/ Firestore and Bootstrap.</h2>
 <br/>
 <h3>Overview:</h3>
